@@ -6,8 +6,7 @@
 
 #include "save/options.h"
 
-
-#include <iostream>
+// Stuff for config
 #include <fstream>
 #include <algorithm>
 
