@@ -79,6 +79,7 @@ int main(int argc, char** argv)
 {
     // Config Tests
     std::ifstream cFile ("src/save/options.txt");
+    std::cout << "Settings:\n";
     if (cFile.is_open())
     {
         std::string line;
@@ -89,7 +90,7 @@ int main(int argc, char** argv)
             auto delimiterPos = line.find("=");
             auto name = line.substr(0, delimiterPos);
             auto value = line.substr(delimiterPos + 1);
-            //std::cout << name << " " << value << '\n';
+            std::cout << " " << name << ": " << value << '\n';
             // Set Options
             if (name == "fps") {FPS = std::stoi(value);}
             if (name == "renderDistance") {renderDistance = std::stoi(value);}
