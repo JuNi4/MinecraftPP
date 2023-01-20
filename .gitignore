@@ -33,3 +33,6 @@
 
 # Output
 bin/*
+
+# Assets and sounds
+src/assets/*
