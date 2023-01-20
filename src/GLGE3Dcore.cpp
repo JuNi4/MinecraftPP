@@ -1025,6 +1025,7 @@ mat4 Camera::calculateViewMatrix()
     mat4 viewMat = vRotMat * vTraMat;
 
     //TEMP: DEBUG
+    /*
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
@@ -1034,6 +1035,7 @@ mat4 Camera::calculateViewMatrix()
         std::cout << std::endl;
     }
     std::cout << std::endl;
+    */
 
     //return the matrix
     return viewMat;
