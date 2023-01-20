@@ -78,9 +78,6 @@ void mainLoop()
 int main(int argc, char** argv)
 {
     // Config Tests
-    
-
-    // std::ifstream is RAII, i.e. no need to call close
     std::ifstream cFile ("src/save/options.txt");
     if (cFile.is_open())
     {
