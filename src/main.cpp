@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+#include "save/options.h"
+
 Object test;
 Camera camera;
 
@@ -72,14 +74,15 @@ int main(int argc, char** argv)
 {
     //init functions
     glgeInit(argc, argv);
-    glgeCreateWindow("Window", 600,600);
+    glgeCreateWindow(windowTitle, 600,600);
     glgeInit3DCore();
     //setup
+    glgeSetMaxFPS(FPS);
     glgeSetClearColor(.5,.5,.5);
     glgeBindDisplayFunc(display);
     glgeBindMainFunc(mainLoop);
 
-    //object setup
+    //object setup - rainbow cube
     Vertex vertices[] = {
                          Vertex(-1,-1, 1, 1,0,0,1),
                          Vertex( 1,-1, 1, 0,1,0,1),
@@ -112,7 +115,7 @@ int main(int argc, char** argv)
     test.bindShader(GLGE_DEFAULT_3D_SHADER);
 
     //camera setup
-    camera = Camera(45.f, 0.1, 10.0, Transform(vec3(0,0,-5),vec3(0,0,0),1));
+    camera = Camera(FOV, 0.1, renderDistance, Transform(vec3(0,0,-5),vec3(0,0,0),1));
     camera.update();
     camera.recalculateProjection();
     glgeBindCamera(&camera);
