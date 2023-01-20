@@ -1,3 +1,4 @@
+## General Options
 # The FPS cap
 fps = 60
 # The render distance in chunks
