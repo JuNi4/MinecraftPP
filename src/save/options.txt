@@ -1,0 +1,8 @@
+# The FPS cap
+fps = 60
+# The render distance in chunks
+renderDistance = 16
+# The field of view
+fov = 70
+# The title of the game
+title = Minecraft++

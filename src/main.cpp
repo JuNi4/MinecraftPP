@@ -6,6 +6,11 @@
 
 #include "save/options.h"
 
+
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+
 Object test;
 Camera camera;
 
@@ -72,6 +77,34 @@ void mainLoop()
 
 int main(int argc, char** argv)
 {
+    // Config Tests
+    
+
+    // std::ifstream is RAII, i.e. no need to call close
+    std::ifstream cFile ("src/save/options.txt");
+    if (cFile.is_open())
+    {
+        std::string line;
+        while(getline(cFile, line)){
+            line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
+            if(line[0] == '#' || line.empty())
+            continue;
+            auto delimiterPos = line.find("=");
+            auto name = line.substr(0, delimiterPos);
+            auto value = line.substr(delimiterPos + 1);
+            //std::cout << name << " " << value << '\n';
+            // Set Options
+            if (name == "fps") {FPS = std::stoi(value);}
+            if (name == "renderDistance") {renderDistance = std::stoi(value);}
+            if (name == "fov") {FOV = std::stoi(value);}
+            if (name == "title") {windowTitle = value.c_str();}
+        }
+        
+    }
+    else {
+        std::cerr << "Couldn't open config file for reading.\n";
+    }
+
     //init functions
     glgeInit(argc, argv);
     glgeCreateWindow(windowTitle, 600,600);
