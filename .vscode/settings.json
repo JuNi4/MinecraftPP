@@ -3,5 +3,12 @@
         "*.tpp": "cpp",
         "ostream": "cpp"
     },
-    "terminal.integrated.shell.windows": "cmd.exe"
+    "terminal.integrated.shell.windows": "cmd.exe",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/justus/Dokumente/Code/GitHub/Minecraft--/bin",
+            "binaryPath": "/home/justus/Dokumente/Code/GitHub/Minecraft--/bin/main",
+            "binaryArgs": []
+        }
+    ]
 }
