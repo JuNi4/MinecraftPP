@@ -35,4 +35,5 @@
 bin/*
 
 # Assets and sounds
-src/assets/*
+src/assets/minecraft
+src/assets/sounds
