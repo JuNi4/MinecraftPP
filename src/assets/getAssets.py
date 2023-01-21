@@ -22,7 +22,7 @@ def getAssets(version='1.19.3', force=False):
         return False
     
     elif os.path.isdir(PATH+'/minecraft') and force:
-        os.removedirs(PATH+'/minecraft')
+        shutil.rmtree(PATH+'/minecraft', ignore_errors=False, onerror=None)
 
     # Check if the minecraft version exists in
     # (On Linux) ~.minecraft/versions
@@ -66,7 +66,7 @@ def getSounds(version='1.19',force=False):
         return False
     
     elif os.path.isdir(PATH+'/sounds') and force:
-        os.removedirs(PATH+'/sounds')
+        shutil.rmtree(PATH+'/sounds', ignore_errors=False, onerror=None)
 
     # Get the path for the sound folder
     # (On Linux) ~.minecraft/assets
@@ -93,7 +93,7 @@ def getSounds(version='1.19',force=False):
             for fpath, fhash in sounds.items():
                 # Ensure the paths are good to go for Windows with properly escaped backslashes in the string
                 src_fpath = os.path.normpath(f"{MC_OBJECTS_PATH}/{fhash[:2]}/{fhash}")
-                dest_fpath = os.path.normpath(f"{OUTPUT_PATH}/sounds/{fpath}")
+                dest_fpath = os.path.normpath(f"{OUTPUT_PATH}/{fpath}")
 
                 # Make any directories needed to put the output file into as Python expects
                 os.makedirs(os.path.dirname(dest_fpath), exist_ok=True)
@@ -107,5 +107,13 @@ def getSounds(version='1.19',force=False):
         return False
 
 
-print(getAssets())
-print(getSounds())
+# Get Args
+arg = sys.argv
+
+force = False
+
+if '-force' in arg:
+    force = True
+
+print(getAssets(force=force))
+print(getSounds(force=force))
