@@ -1,10 +1,4 @@
-import os
-import zipfile
-import platform
-import shutil
-import json
-import sys
-import getpass as gt
+import os,zipfile,platform,shutil,json,sys,getpass as gt
 
 PATH = os.path.abspath(os.path.dirname(__file__))
 
