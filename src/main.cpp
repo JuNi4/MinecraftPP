@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include "save/options.h"
+#include "data/options.h"
 
 // Stuff for config
 #include <fstream>
@@ -77,7 +77,7 @@ void mainLoop()
 int main(int argc, char** argv)
 {
     // Config Tests
-    std::ifstream cFile ("src/save/options.txt");
+    std::ifstream cFile ("data/options.txt");
     std::cout << "Settings:\n";
     if (cFile.is_open())
     {

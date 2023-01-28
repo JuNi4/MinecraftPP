@@ -35,5 +35,7 @@
 bin/*
 
 # Assets and sounds
-src/assets/minecraft
-src/assets/sounds
+assets/minecraft
+assets/sounds
+.idea
+.vscode

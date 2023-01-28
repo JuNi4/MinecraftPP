@@ -1,2 +1,3 @@
 # Minecraft++
- Minecraft in cpp with Glut
+ Minecraft in cpp with OpenGL
+
