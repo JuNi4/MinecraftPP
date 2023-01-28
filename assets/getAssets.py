@@ -102,8 +102,7 @@ def getSounds(version='1.19',force=False):
 
 
 # Get Args
-arg = sys.argv
-force = '-force' in arg
+force = '-force' in sys.argv
 
 print(getAssets(force=force))
 print(getSounds(force=force))
