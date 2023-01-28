@@ -104,5 +104,5 @@ def getSounds(version='1.19',force=False):
 # Get Args
 force = '-force' in sys.argv
 
-print(getAssets(force=force))
-print(getSounds(force=force))
+print('Getting assets: '+str(getAssets(force=force)))
+print('Getting sounds: '+str(getSounds(force=force)))

@@ -28,7 +28,7 @@ void mainLoop()
     camera.recalculateProjection();
     camera.update();
     //update the object
-    //test.rotate(0.5,0.131,0);
+    test.rotate(0.5,0.131,0);
     test.update();
 
     if (glgeGetKeys().w)
