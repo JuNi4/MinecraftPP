@@ -166,6 +166,5 @@ if '__main__' in __name__:
     # Get Args
     force = '-force' in sys.argv
 
-    #print('Getting assets: '+str(getAssets('1.19.3',force)))
-    #print('Getting sounds: '+str(getSounds(force=force)))
+    print('Getting assets:    '+str(getAssets('1.19.3',force)))
     print('Getting Resources: '+str(getResources('1.19.3', force)))
