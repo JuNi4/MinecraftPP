@@ -1,0 +1,5 @@
+#!/bin/bash
+
+g++ getAssets.cpp
+./a.out
+rm a.out
