@@ -15,7 +15,7 @@ def getVersionMeta(version:str):
     # Get the version selected
     version_id = -1
     if not version == 'latest':
-        for i in range(len( version_list )):
+        for i in range(len( version_list["versions"] )):
             if not version_list["versions"][i]["id"] == version: continue
             # When the correct version is found
             version_id = i
@@ -112,10 +112,60 @@ def getResources(version:str, force:bool=False):
 
     `returns` `bool` wether or not the operation was succsessfull
     """
+    RESOURCE_PATH = PATH + '/resources/'
+    BASE_URL = "https://resources.download.minecraft.net/"
+
+    # Check if RESOURCE_PATH exists
+    if os.path.isdir(RESOURCE_PATH) and not force:
+        return False
+    
+    elif os.path.isdir(RESOURCE_PATH) and force:
+        shutil.rmtree(RESOURCE_PATH, ignore_errors=False, onerror=None)
+
+    if not os.path.isdir(RESOURCE_PATH):
+        os.mkdir(RESOURCE_PATH)
+
+
+    versionData = getVersionMeta(version)
+
+    if "error" in versionData: return False
+
+    # Get the assets Index
+    assetIndexURL = versionData["assetIndex"]["url"]
+    response = requests.get(assetIndexURL)
+    assetIndex = json.loads(response.text)["objects"]
+
+    print('Downloading Resources...')
+
+    # Download all assets
+    for obj in assetIndex:
+        # Get File Name Length
+        file_name_length = len(obj.split('/')[-1])
+
+        # Make all directorys for the file
+        if not os.path.isdir(obj[:-file_name_length]):
+            try:
+                os.makedirs(RESOURCE_PATH+obj[:len(obj)-file_name_length-1])
+            except:
+                pass
+
+        # Get the url to the file
+        hash = assetIndex[obj]["hash"]
+        block = hash[:2]
+
+        url = BASE_URL+block+'/'+hash
+
+        # Write the file
+        with open(RESOURCE_PATH+obj, 'wb') as f:
+            response = requests.get(url)
+            f.write(response.content)
+
+    return True
 
 if '__main__' in __name__:
     # Get Args
     force = '-force' in sys.argv
 
-    print('Getting assets: '+str(getAssets('1.19.3',force)))
+    #print('Getting assets: '+str(getAssets('1.19.3',force)))
     #print('Getting sounds: '+str(getSounds(force=force)))
+    print('Getting Resources: '+str(getResources('1.19.3', force)))

@@ -49,7 +49,7 @@ renderDistance:16
 
 ## Custom settings
 # The icon path for the application logo
-icon:$PATH/assets/
+icon:assets/resources/icons/minecraft.icns
 # The title of the game
 title:Minecraft++
 # Brand of the minecraft client
