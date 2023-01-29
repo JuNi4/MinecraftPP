@@ -52,3 +52,5 @@ renderDistance:16
 icon:$PATH/assets/
 # The title of the game
 title:Minecraft++
+# Brand of the minecraft client
+brand:Minecraft++

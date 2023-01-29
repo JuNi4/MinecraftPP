@@ -1,12 +1,49 @@
-import os,zipfile,platform,shutil,json,sys,getpass as gt
+import os,zipfile,platform,shutil,json,sys,getpass as gt, requests
 
 PATH = os.path.abspath(os.path.dirname(__file__))
 
-def getAssets(version='1.19.3', force=False):
-    """ Gets the minecraft assets from the minecraft JAR\n
-    `version` The Minecraft version to get the textures from.
+def getVersionMeta(version:str):
+    """ Gets the json file storing information for the version
 
-    `force` If set to True, if the minecraft folder already exists, it will be replaced.
+    `version` `string` The Minecraft version to get the textures from. Only used if the version is found localy
+
+    `Returns` `dictionary` Returns the content of the meta file
+    """
+    # Get the latest version
+    response = requests.get('https://piston-meta.mojang.com/mc/game/version_manifest_v2.json')
+    version_list = json.loads(response.text)
+    # Get the version selected
+    version_id = -1
+    if not version == 'latest':
+        for i in range(len( version_list )):
+            if not version_list["versions"][i]["id"] == version: continue
+            # When the correct version is found
+            version_id = i
+            break
+    else:
+        version_id = 0
+    
+    if version_id == -1:
+        print('Did not find version: '+version)
+        return {"error": "version not found"}
+
+    print('Found version '+version+' ('+version_list["versions"][version_id]["id"]+')')
+
+    #print(f'Found latest version: {version_list["versions"][0]["id"]}')
+    print(f'Downloading...')
+    # Download the latest version
+    response = requests.get(version_list["versions"][0]["url"])
+    version_data = json.loads(response.text)
+
+    return version_data
+
+
+def getAssets(version:str, force:bool=False):
+    """ Gets the minecraft assets directly from mojang
+
+    `version` `string` The Minecraft version to get the textures from. Only used if the version is found localy
+
+    `force` `bool` If set to True, if the minecraft folder already exists, it will be replaced.
 
     `Returns` `bool` Wether or not it was succsesfull
     """
@@ -27,82 +64,58 @@ def getAssets(version='1.19.3', force=False):
         VERSION_PATH = '/home/'+gt.getuser()+'/.minecraft/versions'
     else: return False # Any other operating system wont be supported (for now)
 
-    if os.path.isfile(VERSION_PATH+'/'+version+'/'+version+'.jar'):
-        try:
-            # Open the version jar
-            with zipfile.ZipFile(VERSION_PATH+'/'+version+'/'+version+'.jar', 'r') as versionFile:
-                for f in versionFile.namelist():
-                    if f.startswith('assets/minecraft'):
-                        # And extract everything from assets/minecraft
-                        versionFile.extract(f, PATH)
+    # Path to the version.jar
+    V_PATH = VERSION_PATH+'/'+version+'/'+version+'.jar'
 
-            # Then move minecraft from assets/assets to assets/ and remove assets/assets
-            shutil.move(PATH+'/assets/minecraft',PATH+'/minecraft')
-            os.removedirs(PATH+'/assets')
-    
-            return True
-        except Exception as e: # Catch exceptions
-            print(e)
-            return False
+    # Download the latest version from mojang
+    if not os.path.isfile(V_PATH):
+        V_PATH = PATH+'/client.jar'
+        # Get Version Data
+        version_data = getVersionMeta(version)
+        # check if version was found
+        if "error" in version_data: return False
+        # Downaload Client
+        response = requests.get(version_data["downloads"]["client"]["url"])
+        with open(PATH+'/client.jar','wb') as c:
+            c.write(response.content)
 
-def getSounds(version='1.19',force=False):
-    """ Copies audio files from indescript hashed folders to named sorted folders.
+        print(f'Extracting...')
 
-    `version` The Minecraft version to get the textures from. (General version, not the subversion number -> 1.19 not 1.19.3)
-
-    `force` If set to True, if the minecraft folder already exists, it will be replaced.
-
-    `Returns` `bool` Wether or not it was succsesfull
-    """
-    
-    # Check if the sounds folder already exists
-    if os.path.isdir(PATH+'/sounds') and not force:
-        return False
-    
-    elif os.path.isdir(PATH+'/sounds') and force:
-        shutil.rmtree(PATH+'/sounds', ignore_errors=False, onerror=None)
-
-    # Get the path for the sound folder
-    # (On Linux) ~.minecraft/assets
-    # (On Windows) %appdata%\.minecraft\assets
-    if 'Windows' in platform.platform():
-        ASSETS_PATH = '%appdata%/.minecraft/assets'
-    elif 'Linux' in platform.platform():
-        ASSETS_PATH = '/home/'+gt.getuser()+'/.minecraft/assets'
-    else: return False # Any other operating system wont be supported (for now)
-
-    MC_OBJECT_INDEX = f"{ASSETS_PATH}/indexes/{version}.json"
-    MC_OBJECTS_PATH = f"{ASSETS_PATH}/objects"
-    MC_SOUNDS = r"minecraft/sounds/"
-    OUTPUT_PATH = PATH+'/sounds'
 
     try:
-        with open(MC_OBJECT_INDEX, "r") as read_file:
-            # Parse the JSON file into a dictionary
-            data = json.load(read_file)
+        # Open the version jar
+        with zipfile.ZipFile(V_PATH) as versionFile:
+            for f in versionFile.namelist():
+                if f.startswith('assets/minecraft'):
+                    # And extract everything from assets/minecraft
+                    versionFile.extract(f, PATH)
+                
+        # Then move minecraft from assets/assets to assets/ and remove assets/assets
+        shutil.move(PATH+'/assets/minecraft',PATH+'/minecraft')
+        os.removedirs(PATH+'/assets')
 
-            # Find each line with MC_SOUNDS prefix, remove the prefix and keep the rest of the path and the hash
-            sounds = {k[len(MC_SOUNDS):] : v["hash"] for (k, v) in data["objects"].items() if k.startswith(MC_SOUNDS)}
-
-            for fpath, fhash in sounds.items():
-                # Ensure the paths are good to go for Windows with properly escaped backslashes in the string
-                src_fpath = os.path.normpath(f"{MC_OBJECTS_PATH}/{fhash[:2]}/{fhash}")
-                dest_fpath = os.path.normpath(f"{OUTPUT_PATH}/{fpath}")
-
-                # Make any directories needed to put the output file into as Python expects
-                os.makedirs(os.path.dirname(dest_fpath), exist_ok=True)
-
-                # Copy the file
-                shutil.copyfile(src_fpath, dest_fpath)
+        # Cleanup client.jar
+        if os.path.isfile(PATH+'/client.jar'):
+            os.remove(PATH+'/client.jar')
 
         return True
     except Exception as e: # Catch exceptions
         print(e)
         return False
 
+def getResources(version:str, force:bool=False):
+    """ Gets the resources from mojang
 
-# Get Args
-force = '-force' in sys.argv
+    `version` `string` the version to be used for getting the resources
 
-print('Getting assets: '+str(getAssets(force=force)))
-print('Getting sounds: '+str(getSounds(force=force)))
+    `force` `bool` if true, in case the resource folder already exists, it will be replaced
+
+    `returns` `bool` wether or not the operation was succsessfull
+    """
+
+if '__main__' in __name__:
+    # Get Args
+    force = '-force' in sys.argv
+
+    print('Getting assets: '+str(getAssets('1.19.3',force)))
+    #print('Getting sounds: '+str(getSounds(force=force)))

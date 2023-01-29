@@ -86,15 +86,15 @@ int main(int argc, char** argv)
             line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
             if(line[0] == '#' || line.empty())
             continue;
-            auto delimiterPos = line.find("=");
+            auto delimiterPos = line.find(":");
             auto name = line.substr(0, delimiterPos);
             auto value = line.substr(delimiterPos + 1);
             std::cout << " " << name << ": " << value << '\n';
             // Set Options
-            if (name == "fps") {FPS = std::stoi(value);}
-            if (name == "renderDistance") {renderDistance = std::stoi(value);}
-            if (name == "fov") {FOV = std::stoi(value);}
-            if (name == "title") {windowTitle = value.c_str();}
+            if (name == "fps") { FPS = std::stoi(value); }
+            if (name == "renderDistance") { renderDistance = std::stoi(value); }
+            if (name == "fov") { FOV = 70+40*std::stof(value); std::cout << FOV << "\n"; }
+            if (name == "title") { windowTitle = value.c_str(); }
         }
         
     }
