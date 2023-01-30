@@ -23,6 +23,14 @@ using json = nlohmann::json;
 std::string httpGet(std::string url);
 
 /**
+ * @brief downloads a file from a url
+ * 
+ * @param url the url to get the file from
+ * @return int 
+ */
+int downloadFile(const char* url, const char* filename);
+
+/**
  * @brief Get the Version Meta json object from mojang
  * 
  * @param version the minecraft version to get data from
@@ -36,3 +44,10 @@ json getVersionMeta(std::string version);
  * @param version the minecraft version to get assets from
  */
 void getAssets(std::string version);
+
+/**
+ * @brief The main function of the programm
+ * 
+ * @return int Arbuatrary number
+ */
+int main();
