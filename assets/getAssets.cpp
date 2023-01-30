@@ -8,6 +8,7 @@
 #include "elnormous/HTTPRequest.hpp"
 #include <curl/curl.h>
 #include <zip.h> // Install using 'sudo apt install libzip-dev'
+#include <filesystem>
 
 using json = nlohmann::json;
 
@@ -48,6 +49,23 @@ int downloadFile(const char* url, const char* filename) {
     return 0;
 }
 
+// for string delimiter
+std::vector<std::string> split (std::string s, std::string delimiter) {
+    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+    std::string token;
+    std::vector<std::string> res;
+
+    while ((pos_end = s.find (delimiter, pos_start)) != std::string::npos) {
+        token = s.substr (pos_start, pos_end - pos_start);
+        pos_start = pos_end + delim_len;
+        res.push_back (token);
+    }
+
+    res.push_back (s.substr (pos_start));
+    return res;
+}
+
+
 json getVersionMeta(std::string version) {
     // load the request body in a json object
     json version_master_list = json::parse(httpGet("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"));
@@ -86,6 +104,12 @@ json getVersionMeta(std::string version) {
 }
 
 void getAssets(std::string version) {
+    // if minecraft folder exists
+    if ( std::filesystem::is_directory("minecraft") ) {
+        // remove minecraft folder
+        std::filesystem::remove_all("minecraft");
+    }
+
     // get the version data
     json versionData = getVersionMeta(version);
     if (versionData.value("error", "none") != "none") { return; }
@@ -99,16 +123,47 @@ void getAssets(std::string version) {
     print(clientURL);
     downloadFile(clientURL, "client.jar");
 
-    struct zip_stat sb;
-
     // unzip the minecraft folder in /client.jar/assets/
     zip *z = zip_open("client.jar", 0, 0);
-    std::cout << zip_get_num_entries(z, 0) << "\n";
+    //std::cout << zip_get_num_entries(z, 0) << "\n";
+
+    const char* pathInZip = "assets/minecraft";
+    struct zip_stat sb;
+    
+    std::string folder = "";
+
     for (int i = 0; i < zip_get_num_entries(z, 0); i++) {
         if (zip_stat_index(z, i, 0, &sb) == 0) {
-            //print(sb.name);
+            // Do something with the zipfile
+            if ( std::string{sb.name}.substr(0,strlen(pathInZip)) != pathInZip ) { continue; } // if the file does not start with assets/minecraft, continue
+
+            // create folder for file
+            folder = std::string{sb.name}.substr(7,strlen(sb.name));
+
+            std::vector<std::string> v = split (folder, "/");
+
+            folder = folder.substr(0,len(folder)-len(v[len(v)-1]));
+
+            std::filesystem::create_directories(folder);
+
+            //Alloc memory for its uncompressed contents
+            char *contents = new char[sb.size];
+
+            //Read the compressed file
+            zip_file *f = zip_fopen(z, sb.name, 0);
+            zip_fread(f, contents, sb.size);
+            zip_fclose(f);
+
+            if(!std::ofstream((folder + v[len(v)-1]).c_str()).write(contents, sb.size))
+            {
+                std::cerr << "Error writing file" << '\n';
+                //return EXIT_FAILURE;
+            }
         }
     }
+
+    // Delete client.jar
+    std::filesystem::remove("client.jar");
 }
 
 int main()
