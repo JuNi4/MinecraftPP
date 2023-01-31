@@ -37,6 +37,10 @@ bin/*
 # Assets and sounds
 assets/minecraft
 assets/resources
+assets/client.jar
+
+# IDE folders
 .idea
 .vscode
-assets/client.jar
+
+old
