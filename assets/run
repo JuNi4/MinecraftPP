@@ -1,5 +1,0 @@
-#!/bin/bash
-
-g++ getAssets.cpp -lcurl -lzip -std=c++20
-./a.out
-rm a.out
