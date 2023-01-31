@@ -39,11 +39,18 @@ int downloadFile(const char* url, const char* filename);
 json getVersionMeta(std::string version);
 
 /**
- * @brief Extract the assets from a minecraft jar
+ * @brief Download and extract the assets from a minecraft jar
  * 
  * @param version the minecraft version to get assets from
  */
 void getAssets(std::string version);
+
+/**
+ * @brief Dowwnload the resources from mojang
+ * 
+ * @param version the minecraft version to get assets from
+ */
+void getResources(std::string version);
 
 /**
  * @brief The main function of the programm

@@ -76,7 +76,7 @@ json getVersionMeta(std::string version) {
 
     // Loop through all minecraft versions
     if (version != "latest") {
-        for (int i = 0; i <= end(version_list) - begin(version_list) - 1; i++ ) {
+        for (int i = 0; i < end(version_list) - begin(version_list); i++ ) {
             // Get the id of the id of the index
             std::string id = version_list[i].value("id", "none");
             // if the id is not the specified version, continue
@@ -104,6 +104,7 @@ json getVersionMeta(std::string version) {
 }
 
 void getAssets(std::string version) {
+    print("Getting Assets...");
     // if minecraft folder exists
     if ( std::filesystem::is_directory("minecraft") ) {
         // remove minecraft folder
@@ -120,7 +121,7 @@ void getAssets(std::string version) {
     const char* clientURL = clientURLString.c_str();
     
     // Download the client.jar
-    print(clientURL);
+    print("Downloading client.jar...");
     downloadFile(clientURL, "client.jar");
 
     // unzip the minecraft folder in /client.jar/assets/
@@ -132,6 +133,7 @@ void getAssets(std::string version) {
     
     std::string folder = "";
 
+    print("Extracting assets...");
     for (int i = 0; i < zip_get_num_entries(z, 0); i++) {
         if (zip_stat_index(z, i, 0, &sb) == 0) {
             // Do something with the zipfile
@@ -144,7 +146,9 @@ void getAssets(std::string version) {
 
             folder = folder.substr(0,len(folder)-len(v[len(v)-1]));
 
-            std::filesystem::create_directories(folder);
+            if ( !std::filesystem::is_directory(folder) ) {
+                std::filesystem::create_directories(folder);
+            }
 
             //Alloc memory for its uncompressed contents
             char *contents = new char[sb.size];
@@ -156,18 +160,74 @@ void getAssets(std::string version) {
 
             if(!std::ofstream((folder + v[len(v)-1]).c_str()).write(contents, sb.size))
             {
-                std::cerr << "Error writing file" << '\n';
-                //return EXIT_FAILURE;
+                std::cerr << "Error writing file " << EXIT_FAILURE << '\n';
             }
         }
     }
 
     // Delete client.jar
     std::filesystem::remove("client.jar");
+    print("Done getting assets!");
+}
+
+void getResources(std::string version) {
+    print("Getting resources...");
+    std::string BASE_URL = "https://resources.download.minecraft.net/";
+    // if minecraft folder exists
+    if ( std::filesystem::is_directory("resources") ) {
+        // remove minecraft folder
+        std::filesystem::remove_all("resources");
+    }
+
+    // get the version data
+    json versionData = getVersionMeta(version);
+    if (versionData.value("error", "none") != "none") { return; }
+
+    json assetIndexData = versionData.value("assetIndex", json::parse("{\"error\": \"no assetIndex\"}"));
+    std::string assetIndexUrl = assetIndexData.value("url", "none");
+
+    // don't conitnue if url didn't work
+    if (assetIndexUrl == "none") { return; }
+
+    // get the asset index
+    json assetIndex = json::parse(httpGet(assetIndexUrl));
+
+    json objects = assetIndex["objects"];
+
+    if ( objects == nullptr ) { return; }
+    
+    // go through all assets and download them
+    for (json::iterator it = objects.begin(); it != objects.end(); ++it) {
+        print("Downloading "+it.key());
+        //std::cout << it.key() << " : " << it.value() << "\n";
+
+        // create folder for file
+        std::string folder = "resources/"+it.key();
+        std::string path = "resources/"+it.key();
+
+        std::vector<std::string> v = split (folder, "/");
+
+        folder = folder.substr(0,len(folder)-len(v[len(v)-1]));
+
+        if ( !std::filesystem::is_directory(folder) ) {
+            std::filesystem::create_directories(folder);
+        }
+
+        // assamble url
+        std::string hash = objects[it.key()]["hash"];
+        std::string block = hash.substr(0,2);
+
+        std::string url = BASE_URL + block +"/"+ hash;
+
+        // Download file
+        downloadFile(url.c_str(),path.c_str());
+    }
+    print("Done getting assets!");
 }
 
 int main()
 {
     getAssets("1.19.3");
+    getResources("1.19.3");
     return 0;
 }
