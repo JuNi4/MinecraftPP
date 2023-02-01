@@ -28,9 +28,11 @@ entityDistanceScaling:1.0
 entityShadows:true
 forceUnicodeFont:false
 # The field of view (70+40*fov)
+# Default: 0.0
 fov:0.0
 fovEffectScale:1.0
 # The FPS cap
+# Default: 60
 fps:60
 fullscreen:false
 gamma:1.0
@@ -45,12 +47,21 @@ hideServerAddress:false
 incompatibleResourcePacks:[]
 invertYMouse:false
 # The render distance in chunks
+# Default: 16
 renderDistance:16
 
 ## Custom settings
 # The icon path for the application logo
+# Default: assets/resources/icons/minecraft.icns
 icon:assets/resources/icons/minecraft.icns
 # The title of the game
+# Default: Minecraft++
 title:Minecraft++
-# Brand of the minecraft client
+# Brand of the minecraft client (only used in F3 menu)
+# Default: Minecraft++
 brand:Minecraft++
+# Wether or not the Minecraft++ brand should be send to the server
+# If not, the client will tell a server, that it is a vanilla client
+# It will disable client specific features, that are requested by a server like custom ui's
+# Default: true
+sendBrand:true

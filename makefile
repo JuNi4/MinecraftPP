@@ -6,7 +6,7 @@ SRC		:= src
 INCLUDE	:= include
 LIB		:= lib
 
-LIBRARIES	:= -lGL -lglut -lGLEW src/GLGE/CML/*.cpp src/GLGE/*.cpp
+LIBRARIES	:= include/nlohmann/*.hpp
 EXECUTABLE	:= main
 
 
