@@ -1,5 +1,5 @@
 #include <nlohmann/json.hpp>
-#include "data/options.hpp"
+#include <options.hpp>
 #include <iostream>
 
 using json = nlohmann::json;
