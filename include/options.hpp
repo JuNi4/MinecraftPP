@@ -3,7 +3,7 @@
 #include <fstream>
 #include <algorithm>
 
-// Obsolete. Please do not use. They were only a placeholder
+// Place holder vars
 /**
  * @brief the FPS cap of the game
 */
