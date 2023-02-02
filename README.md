@@ -17,7 +17,8 @@
   - elnormous/HTTPRequest
 
 ### Setup
-On the first launch, you will neeed to get the assets for the game by executing `getAssets.sh`. This will downlaod all assets from Mojang wich may take up to 15 minutes or more depending on you connection speed.
+On the first launch, Minecraft++ will automatily download all resources required to start the game. This may take up to 10 minutes or more, depending on your connection speed.
+In addition to that, if Minecraft++ detects on options.txt from your default minecraft install, it will ask you if it should be copied to Minecraft++. If you choose 'yes' it will require a restart for changes to take affect.
 
 ## Running Minecraft++
 Once Minecraft++ is finished / usable, you can run it by compiling it with `make` and then running it with `./bin/main` or compiling and running by using `make run`.

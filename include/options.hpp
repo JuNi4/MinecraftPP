@@ -1,7 +1,9 @@
 #include <nlohmann/json.hpp>
 #include <iostream>
 #include <fstream>
-#include <algorithm>
+#include <filesystem>
+
+using json = nlohmann::json;
 
 // Place holder vars
 /**
@@ -72,6 +74,8 @@ nlohmann::json setOptionValuetypes(nlohmann::json jobj) {
  * @return nlohmann::json The json object containing all the options (with mostly correct types)
  */
 nlohmann::json getOptions(std::string path = "data/options.txt") {
+    // check if options file exists
+    if (!std::filesystem::is_regular_file(path)) { return json::parse(R"({"error": "options file not found!"})"); }
     nlohmann::json j;
     // Config Tests
     std::ifstream cFile (path);
@@ -104,6 +108,8 @@ nlohmann::json getOptions(std::string path = "data/options.txt") {
  * @return nlohmann::json The json object containing all the options
  */
 nlohmann::json getRawOptions(std::string path = "data/options.txt") {
+    // check if options file exists
+    if (!std::filesystem::is_regular_file(path)) { return json::parse(R"({"error": "options file not found!"})"); }
     nlohmann::json j;
     // Config Tests
     std::ifstream cFile (path);

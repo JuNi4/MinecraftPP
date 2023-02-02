@@ -7,11 +7,8 @@
 using json = nlohmann::json;
 
 int main() {
-    //json opt = getOptions(); // load options file
-    //std::cout << opt.dump(4) << std::endl;
-
-    //getAssets("1.19.3", "assets/");
-    getResources("1.19.3", "assets/");
+    json opt = getOptions(); // load options file
+    std::cout << opt.dump(4) << std::endl;
 
     return 0;
 }
