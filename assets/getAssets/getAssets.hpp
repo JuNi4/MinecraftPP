@@ -1,5 +1,5 @@
 /**
- * @file getAssets.h
+ * @file getAssets.hpp
  * @author JuNi4
  * @brief Downloads all assets from mojang
  * @version 0.1
@@ -10,7 +10,7 @@
  */
 
 #include <iostream>
-#include "nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 

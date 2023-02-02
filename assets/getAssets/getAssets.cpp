@@ -2,10 +2,10 @@
 #include <iostream>
 #include <fstream>
 
-#include "utils.hpp"
+#include <utils.hpp>
 
-#include "nlohmann/json.hpp"
-#include "elnormous/HTTPRequest.hpp"
+#include <nlohmann/json.hpp>
+#include <elnormous/HTTPRequest.hpp>
 #include <curl/curl.h>
 #include <zip.h> // Install using 'sudo apt install libzip-dev'
 #include <filesystem>
