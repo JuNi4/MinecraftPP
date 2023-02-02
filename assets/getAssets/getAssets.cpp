@@ -103,12 +103,12 @@ json getVersionMeta(std::string version) {
     return version_data;
 }
 
-void getAssets(std::string version) {
+void getAssets(std::string version, std::string base_path = "") {
     print("Getting Assets...");
     // if minecraft folder exists
-    if ( std::filesystem::is_directory("minecraft") ) {
+    if ( std::filesystem::is_directory(base_path+"minecraft") ) {
         // remove minecraft folder
-        std::filesystem::remove_all("minecraft");
+        std::filesystem::remove_all(base_path+"minecraft");
     }
 
     // get the version data
@@ -158,7 +158,7 @@ void getAssets(std::string version) {
             zip_fread(f, contents, sb.size);
             zip_fclose(f);
 
-            if(!std::ofstream((folder + v[len(v)-1]).c_str()).write(contents, sb.size))
+            if(!std::ofstream((base_path+folder + v[len(v)-1]).c_str()).write(contents, sb.size))
             {
                 std::cerr << "Error writing file " << EXIT_FAILURE << '\n';
             }
@@ -170,13 +170,13 @@ void getAssets(std::string version) {
     print("Done getting assets!");
 }
 
-void getResources(std::string version) {
+void getResources(std::string version, std::string base_path = "") {
     print("Getting resources...");
     std::string BASE_URL = "https://resources.download.minecraft.net/";
     // if minecraft folder exists
-    if ( std::filesystem::is_directory("resources") ) {
+    if ( std::filesystem::is_directory(base_path+"resources") ) {
         // remove minecraft folder
-        std::filesystem::remove_all("resources");
+        std::filesystem::remove_all(base_path+"resources");
     }
 
     // get the version data
@@ -202,8 +202,8 @@ void getResources(std::string version) {
         //std::cout << it.key() << " : " << it.value() << "\n";
 
         // create folder for file
-        std::string folder = "resources/"+it.key();
-        std::string path = "resources/"+it.key();
+        std::string folder = base_path+"resources/"+it.key();
+        std::string path = base_path+"resources/"+it.key();
 
         std::vector<std::string> v = split (folder, "/");
 
@@ -227,7 +227,7 @@ void getResources(std::string version) {
 
 int main()
 {
-    getAssets("1.19.3");
-    getResources("1.19.3");
+    getAssets("1.19.3", "");
+    getResources("1.19.3", "");
     return 0;
 }

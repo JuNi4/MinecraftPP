@@ -10,6 +10,10 @@
   - freeglut (`sudo apt install freeglut3-dev`)
   - gl       (`sudo apt install libgl-dev`)
   - glew     (`sudo apt install libglew-dev`)
+(Included)
+  - curl
+  - nlohmann/json
+  - elnormous/HTTPRequest
 
 ### Setup
 On the first launch, you will neeed to get the assets for the game by executing `getAssets.sh`. This will downlaod all assets from Mojang wich may take up to 15 minutes or more depending on you connection speed.

@@ -43,14 +43,14 @@ json getVersionMeta(std::string version);
  * 
  * @param version the minecraft version to get assets from
  */
-void getAssets(std::string version);
+void getAssets(std::string version, std::string base_path = "");
 
 /**
  * @brief Dowwnload the resources from mojang
  * 
  * @param version the minecraft version to get assets from
  */
-void getResources(std::string version);
+void getResources(std::string version, std::string base_path = "");
 
 /**
  * @brief The main function of the programm
