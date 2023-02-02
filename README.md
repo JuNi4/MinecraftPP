@@ -10,6 +10,7 @@
   - freeglut (`sudo apt install freeglut3-dev`)
   - gl       (`sudo apt install libgl-dev`)
   - glew     (`sudo apt install libglew-dev`)
+  - libzip   (`sudo apt install libzip-dev`)
 (Included)
   - curl
   - nlohmann/json
