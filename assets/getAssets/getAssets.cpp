@@ -227,7 +227,7 @@ void getResources(std::string version, std::string base_path = "") {
 
 int main()
 {
-    getAssets("1.19.3", "");
-    getResources("1.19.3", "");
+    getAssets("1.19.3");
+    getResources("1.19.3");
     return 0;
 }
