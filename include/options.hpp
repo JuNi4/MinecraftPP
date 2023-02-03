@@ -71,11 +71,11 @@ nlohmann::json setOptionValuetypes(nlohmann::json jobj) {
  * @brief Get the Options json object
  * 
  * @param path The path to the options.txt
- * @return nlohmann::json The json object containing all the options (with mostly correct types)
+ * @return nlohmann::json The json object containing all the options (with mostly correct types). In case of am error, the object will contain a key called "error" containing some detail of the error
  */
 nlohmann::json getOptions(std::string path = "data/options.txt") {
     // check if options file exists
-    if (!std::filesystem::is_regular_file(path)) { return json::parse(R"({"error": "options file not found!"})"); }
+    if (!std::filesystem::is_regular_file(path)) { return json::parse(R"({"error": "404: options file not found!"})"); }
     nlohmann::json j;
     // Config Tests
     std::ifstream cFile (path);
@@ -105,7 +105,7 @@ nlohmann::json getOptions(std::string path = "data/options.txt") {
  * The same as getOptions(); but the data types are all strings
  * 
  * @param path The path to the options.txt
- * @return nlohmann::json The json object containing all the options
+ * @return nlohmann::json The json object containing all the options. In case of am error, the object will contain a key called "error" containing some detail of the error
  */
 nlohmann::json getRawOptions(std::string path = "data/options.txt") {
     // check if options file exists
@@ -133,4 +133,17 @@ nlohmann::json getRawOptions(std::string path = "data/options.txt") {
         std::cerr << "Couldn't open config file for reading.\n";
         return nlohmann::json::parse("{\"error:\": \"Could not open file\"}");
     }
+}
+
+/**
+ * @brief Set an option by a key in the options file
+ * 
+ * @param key The key to be modified
+ * @param value The value to set the key to
+ * @param path The path to the options file
+ * @return true The operation was succsessfull
+ * @return false The operation failed succsessfully
+ */
+bool setOption(std::string key, auto value, std::string path = "data/options.txt") {
+    
 }
