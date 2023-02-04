@@ -43,4 +43,8 @@ assets/client.jar
 .idea
 .vscode
 
+# Old/Trash folder
 old
+
+# Data
+data/*
