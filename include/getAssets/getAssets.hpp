@@ -51,10 +51,3 @@ void getAssets(std::string version, std::string base_path);
  * @param version the minecraft version to get assets from
  */
 void getResources(std::string version, std::string base_path);
-
-/**
- * @brief The main function of the programm
- * 
- * @return int Arbuatrary number
- */
-int main();
