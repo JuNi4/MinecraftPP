@@ -27,6 +27,10 @@ bool displayFPS = false;
 */
 const char* windowTitle = "NAN";
 
+int length(auto value) {
+    return end(value) - begin(value);
+}
+
 /**
  * @brief Set the value type of the values in a json object
  * 
@@ -145,5 +149,64 @@ nlohmann::json getRawOptions(std::string path = "data/options.txt") {
  * @return false The operation failed succsessfully
  */
 bool setOption(std::string key, auto value, std::string path = "data/options.txt") {
-    
+    std::cout << key << " " << value << " " << path << "\n";
+    // check if options file exists
+    if (!std::filesystem::is_regular_file(path)) { return false; }
+    // Load config file
+    std::fstream fp (path);
+
+    if (fp.is_open()) {
+        // line string
+        std::string line;
+
+        // if the key was found in the options file
+        bool found = false;
+
+        // Tempoary string
+        std::string tmp = "";
+        // Key position info
+        int keyPos;
+        //int keyLineLenght;
+
+        while ( getline(fp, line) ) {
+            if(line[0] == '#' || line.empty()) { tmp += line + "\n"; continue; } // skip if line is empty or comment 
+
+            // Get key and value
+            auto delimiterPos = line.find(":");
+            auto name = line.substr(0, delimiterPos);
+            //auto val = line.substr(delimiterPos + 1);
+
+            if ( key != name ) { 
+                tmp += line + "\n";
+                continue;
+            }
+
+            found = true;
+
+            // Get positional information of key line
+            keyPos = length(tmp);
+            //keyLineLenght = length(line);
+        }
+
+        // The char* to be written to the file
+        const char* setting = (key + ":" + value + "\n").c_str();
+        std::cout << setting;
+
+        // Set key to value
+        if ( found ) {
+            // write new config value at position
+            fp.seekp(keyPos);
+
+            fp.write(setting, length(std::string(setting)));
+            // write the remaining part of config file
+            fp.seekp(keyPos+length(std::string(setting)));
+            //fp.write(tmp.c_str(), sizeof(tmp.c_str()));
+            std::cout << "found and written!\n";
+        }
+
+
+        fp.close();
+    }
+
+    return true;
 }
