@@ -433,10 +433,36 @@ bool createOptionsFile(bool force = false, json optionsStruct = defaultOptionsSt
     return sucsessfull;
 }
 
+/**
+ * @brief Deletes the options file
+ * 
+ * @param path The path to the options file
+ * @return bool Whether or not the operation was sucsessfull
+ */
 bool deleteOptionsFile(std::string path = "data/options.txt") {
     // check if the options file exists
     if (! std::filesystem::is_regular_file(path) ) { return true; }
 
     // delete file
     return std::filesystem::remove(path);
+}
+
+/**
+ * @brief Tryes to import the options.txt from mojang
+ * 
+ * Note: this is currently not implemented or not completly functional
+ * 
+ * @param local_path The path to the M++ options file
+ * @return bool Whether or not the operation was sucsessfull
+ */
+bool importConfig(std::string local_path = "data/options.txt") {
+    /*
+    ToDo:
+
+    - Get the minecraft options file
+    - load it
+    - create local options file
+    - save minecraft options file to local file
+    
+    */
 }
