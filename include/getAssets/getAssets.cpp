@@ -36,14 +36,14 @@ std::string httpGet(std::string url) {
 int downloadFile(const char* url, const char* filename) {
     CURL *curl;
     FILE *fp;
-    CURLcode res;
+    //CURLcode res;
     curl = curl_easy_init();
     if (curl) {
         fp = fopen(filename,"wb");
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
-        res = curl_easy_perform(curl);
+        /*res = */curl_easy_perform(curl);
         /* always cleanup */
         curl_easy_cleanup(curl);
         fclose(fp);
