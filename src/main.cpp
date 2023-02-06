@@ -8,6 +8,7 @@ using json = nlohmann::json;
 
 int main() {
     deleteOptionsFile();
-    createOptionsFile();
+    deleteOptionsFile("data/keyBinds.txt");
+    importConfig();
     return 0;
 }

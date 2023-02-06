@@ -35,7 +35,7 @@ nlohmann::json defaultOptionsStruct = json::parse(R"(
     {
         "advancedItemTooltips": {"val": "false", "comments": "## Typical minecraft options"},
         "allowServerListing":{"val": "true"},
-        "ao":{"val": "true"},
+        "ao":{"val": "2"},
         "attackIndicator":{"val": "1"},
         "autoJump":{"val": "false"},
         "autoSuggestions":{"val": "true"},
@@ -393,13 +393,18 @@ bool writeToLastLine(std::string value, std::string path = "data/options.txt") {
  * @brief Saves all options
  * 
  * @param obj The json object containing all the options to be saved
+ * @param ignoreLevel The level of ignorance. 0 = Nothing; 1 = key binds; 2 = regular options.
  * @param path The path to the options file
  */
-bool saveOptions(json obj, std::string path = "data/options.txt") {
+bool saveOptions(json obj, int ignoreLevel = 0, std::string path = "data/options.txt") {
     bool sucsessfull = true; // Whether or not the saving was sucsessfull
 
     // loop through all keys in options object
     for (json::iterator it = obj.begin(); it != obj.end(); it++) {
+
+        if (ignoreLevel == 1 && it.key().substr(0,4) == "key_") { continue; }
+        if (ignoreLevel == 2 && it.key().substr(0,4) != "key_") { continue; }
+
         if ( ! setOption(it.key(), std::string(it.value()), path) ) {
             sucsessfull = false;
         }
@@ -477,7 +482,7 @@ bool deleteOptionsFile(std::string path = "data/options.txt") {
  * @param local_path The path to the M++ options file
  * @return bool Whether or not the operation was sucsessfull
  */
-bool importConfig(std::string local_path = "data/options.txt") {
+bool importConfig(std::string localOptPath = "data/options.txt", bool doKeyBinds = true, std::string localKeyPath = "data/keyBinds.txt") {
     /*
     ToDo:
 
@@ -492,19 +497,24 @@ bool importConfig(std::string local_path = "data/options.txt") {
    // set minecraft path based on operating system
    std::string os = getOsName();
    // linux path
-   if (os == "Linux") { minecraftPath = "~/.minecraft/"; delimeter = "/"; }
+   if (os == "Linux") { minecraftPath = "/home/justus/.minecraft/"; delimeter = "/"; }
    else if (os.substr(0,7) == "Windows") { minecraftPath = "%appdata%\\.minecraft\\"; delimeter = "\\"; }
    else { return false; }
-   // test if this /\ is working
-   // todo: check if file exists
+   // check if file exists
+   if (! std::filesystem::is_regular_file(minecraftPath+"options.txt") ) { return false; }
    // read minecraft options file
    json mcOptions = getRawOptions(minecraftPath+"options.txt");
    // check if local options file exists
-   if (! std::filesystem::is_regular_file(local_path) ) {
+   if (! std::filesystem::is_regular_file(localOptPath) ) {
       // create options file
-      createOptionsFile(false, local_path);
+      createOptionsFile(false, localOptPath);
+   }
+   if (! std::filesystem::is_regular_file(localKeyPath) && doKeyBinds ) {
+      // create options file
+      createOptionsFile(false, localKeyPath);
    }
    // save to local file
-   saveOptions(mcOptions, local_path);
+   saveOptions(mcOptions, 1, localOptPath); // set normal options
+   if (doKeyBinds) { saveOptions(mcOptions, 2, localKeyPath); } // set key binds
    return true;
 }
