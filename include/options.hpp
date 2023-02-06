@@ -95,6 +95,28 @@ int length(auto value) {
 }
 
 /**
+ * @brief gets the type of the operating system
+*/
+std::string getOsName()
+{
+    #ifdef _WIN32
+    return "Windows 32-bit";
+    #elif _WIN64
+    return "Windows 64-bit";
+    #elif __APPLE__ || __MACH__
+    return "Mac OSX";
+    #elif __linux__
+    return "Linux";
+    #elif __FreeBSD__
+    return "FreeBSD";
+    #elif __unix || __unix__
+    return "Unix";
+    #else
+    return "Other";
+    #endif
+}                      
+
+/**
  * @brief Set the value type of the values in a json object
  * 
  * @param jobj The Json object to set the value types
@@ -395,7 +417,7 @@ bool saveOptions(json obj, std::string path = "data/options.txt") {
  * @return true The creation was sucsessfull; 
  * @return false The creation failed
  */
-bool createOptionsFile(bool force = false, json optionsStruct = defaultOptionsStruct, std::string path = "data/options.txt") {
+bool createOptionsFile(bool force = false, std::string path = "data/options.txt", json optionsStruct = defaultOptionsStruct) {
     // check if the file exists
     if (std::filesystem::is_regular_file(path) && ! force) { return false; }
 
@@ -465,4 +487,24 @@ bool importConfig(std::string local_path = "data/options.txt") {
     - save minecraft options file to local file
     
     */
+   std::string minecraftPath;
+   std::string delimeter;
+   // set minecraft path based on operating system
+   std::string os = getOsName();
+   // linux path
+   if (os == "Linux") { minecraftPath = "~/.minecraft/"; delimeter = "/"; }
+   else if (os.substr(0,7) == "Windows") { minecraftPath = "%appdata%\\.minecraft\\"; delimeter = "\\"; }
+   else { return false; }
+   // test if this /\ is working
+   // todo: check if file exists
+   // read minecraft options file
+   json mcOptions = getRawOptions(minecraftPath+"options.txt");
+   // check if local options file exists
+   if (! std::filesystem::is_regular_file(local_path) ) {
+      // create options file
+      createOptionsFile(false, local_path);
+   }
+   // save to local file
+   saveOptions(mcOptions, local_path);
+   return true;
 }
