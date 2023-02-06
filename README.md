@@ -14,8 +14,8 @@
   - curl     (`sudo apt install libcurl-dev` or https://curl.se/download.html)
 
 (Included)
-  - nlohmann/json
-  - elnormous/HTTPRequest
+  - nlohmann/json (https://github.com/nlohmann/json)
+  - elnormous/HTTPRequest (https://github.com/elnormous/HTTPRequest)
 
 ### Setup
 On the first launch, Minecraft++ will automatily download all resources required to start the game. This may take up to 10 minutes or more, depending on your connection speed.
