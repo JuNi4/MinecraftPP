@@ -2,7 +2,7 @@
  Minecraft in cpp with OpenGL
 
 ## Supported operating systems:
-- Linux (Debian)
+- Linux (only tested on Debian)
 
 ## How to setup Minecraft++
 
