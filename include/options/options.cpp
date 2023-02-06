@@ -3,118 +3,14 @@
 #include <fstream>
 #include <filesystem>
 #include <limits>
+#include <utils.hpp>
+
+#include "options.hpp"
+#include "keyCodes.h"
 
 using json = nlohmann::json;
 
-// Place holder vars
-/**
- * @brief the FPS cap of the game
-*/
-int FPS = 60;
-/**
- * @brief the Render Distance of the game. Not yet in chunks
-*/
-double renderDistance = 10;
-/**
- * @brief The FOV of the camera
-*/
-float FOV = 45;
-/**
- * @brief wether or not the fps should be printed to the console
-*/
-bool displayFPS = false;
-/**
- * @brief the title of the window
-*/
-const char* windowTitle = "NAN";
-
-/**
- * @brief A json object for creating a config file
- */
-nlohmann::json defaultOptionsStruct = json::parse(R"(
-    {
-        "advancedItemTooltips": {"val": "false", "comments": "## Typical minecraft options"},
-        "allowServerListing":{"val": "true"},
-        "ao":{"val": "2"},
-        "attackIndicator":{"val": "1"},
-        "autoJump":{"val": "false"},
-        "autoSuggestions":{"val": "true"},
-        "backgroundForChatOnly":{"val": "true"},
-        "biomeBlendRadius":{"val": "2"},
-        "bobView":{"val": "true"},
-        "chatColors":{"val": "true"},
-        "chatDelay":{"val": "0.0"},
-        "chatHeightFocused":{"val": "1.0"},
-        "chatHeightUnfocused":{"val": "0.5"},
-        "chatLineSpacing":{"val": "0.0"},
-        "chatLinks":{"val": "true"},
-        "chatLinksPrompt":{"val": "true"},
-        "chatOpacity":{"val": "1.0"},
-        "chatScale":{"val": "1.0"},
-        "chatVisibility":{"val": "0"},
-        "chatWidth":{"val": "1.0"},
-        "darkMojangStudiosBackground":{"val": "true"},
-        "darknessEffectScale":{"val": "1.0"},
-        "directionalAudio":{"val": "false"},
-        "discrete_mouse_scroll":{"val": "false"},
-        "enableVsync":{"val": "false"},
-        "entityDistanceScaling":{"val": "1.0"},
-        "entityShadows":{"val": "true"},
-        "forceUnicodeFont":{"val": "false"},
-        "fov":{"val": "0.0", "comments": "# The field of view\n# Default: 0.0"},
-        "fovEffectScale":{"val": "1.0"},
-        "fps":{"val": "60", "comments": "# The FPS cap\n# Default: 60"},
-        "fullscreen":{"val": "false"},
-        "gamma":{"val": "1.0"},
-        "glDebugVerbosity":{"val": "1"},
-        "graphicsMode":{"val": "1"},
-        "guiScale":{"val": "3"},
-        "heldItemTooltips":{"val": "true"},
-        "hideBundleTutorial":{"val": "true"},
-        "hideLightningFlashes":{"val": "false"},
-        "hideMatchedNames":{"val": "true"},
-        "hideServerAddress":{"val": "false"},
-        "incompatibleResourcePacks":{"val": "[]"},
-        "invertYMouse":{"val": "false"},
-        "renderDistance":{"val": "16", "comments": "# The render distance in chunks\n# Default: 16"},
-        "icon":{"val": "assets/resources/icons/minecraft.icns", "comments": "# The icon path for the application logo\n# Default: assets/resources/icons/minecraft.icns"},
-        "title":{"val": "Minecraft++", "comments": "# The title of the game\n# Default: Minecraft++"},
-        "brand":{"val": "Minecraft++", "comments": "# Brand of the minecraft client (only used in F3 menu)\n# Default: Minecraft++"},
-        "sendBrand":{"val": "true", "comments": "# Wether or not the Minecraft++ brand should be send to the server\n# If not, the client will tell a server, that it is a vanilla client\n# It will disable client specific features, that are requested by a server like custom ui's\n# Default: true"}
-    }
-)");
-
-/**
- * @brief gets the length of a string
- * 
- * @param value The string to get the length of
- * @return int The length of the string
- */
-int length(auto value) {
-    return end(value) - begin(value);
-}
-
-/**
- * @brief gets the type of the operating system
-*/
-std::string getOsName()
-{
-    #ifdef _WIN32
-    return "Windows 32-bit";
-    #elif _WIN64
-    return "Windows 64-bit";
-    #elif __APPLE__ || __MACH__
-    return "Mac OSX";
-    #elif __linux__
-    return "Linux";
-    #elif __FreeBSD__
-    return "FreeBSD";
-    #elif __unix || __unix__
-    return "Unix";
-    #else
-    return "Other";
-    #endif
-}                      
+namespace options {
 
 /**
  * @brief Set the value type of the values in a json object
@@ -162,7 +58,7 @@ nlohmann::json setOptionValuetypes(nlohmann::json jobj) {
  * @param path The path to the options.txt
  * @return nlohmann::json The json object containing all the options (with mostly correct types). In case of am error, the object will contain a key called "error" containing some detail of the error
  */
-nlohmann::json getOptions(std::string path = "data/options.txt") {
+nlohmann::json getOptions(std::string path) {
     // check if options file exists
     if (!std::filesystem::is_regular_file(path)) { return json::parse(R"({"error": "404: options file not found!"})"); }
     nlohmann::json j;
@@ -182,7 +78,7 @@ nlohmann::json getOptions(std::string path = "data/options.txt") {
             // Set Options
             j[name] = value;
         }
-        return setOptionValuetypes(j);
+        return options::setOptionValuetypes(j);
     }
     else {
         std::cerr << "Couldn't open config file for reading.\n";
@@ -196,7 +92,7 @@ nlohmann::json getOptions(std::string path = "data/options.txt") {
  * @param path The path to the options.txt
  * @return nlohmann::json The json object containing all the options. In case of am error, the object will contain a key called "error" containing some detail of the error
  */
-nlohmann::json getRawOptions(std::string path = "data/options.txt") {
+nlohmann::json getRawOptions(std::string path) {
     // check if options file exists
     if (!std::filesystem::is_regular_file(path)) { return json::parse(R"({"error": "options file not found!"})"); }
     nlohmann::json j;
@@ -233,7 +129,7 @@ nlohmann::json getRawOptions(std::string path = "data/options.txt") {
  * @return true The operation was succsessfull,
  * @return false The operation failed succsessfully
  */
-bool setOption(std::string key, auto value, std::string path = "data/options.txt") {
+bool setOption(std::string key, auto value, std::string path) {
     //std::cout << key << " " << value << " " << path << "\n";
     // check if options file exists
     if (!std::filesystem::is_regular_file(path)) { return false; }
@@ -353,7 +249,7 @@ bool setOption(std::string key, auto value, std::string path = "data/options.txt
  * @return true The writing was sucsessfull; 
  * @return false The writing failed
  */
-bool writeToLastLine(std::string value, std::string path = "data/options.txt") {
+bool writeToLastLine(std::string value, std::string path) {
     // check if the file exists
     if (! std::filesystem::is_regular_file(path)) { return false; }
 
@@ -396,7 +292,7 @@ bool writeToLastLine(std::string value, std::string path = "data/options.txt") {
  * @param ignoreLevel The level of ignorance. 0 = Nothing; 1 = key binds; 2 = regular options.
  * @param path The path to the options file
  */
-bool saveOptions(json obj, int ignoreLevel = 0, std::string path = "data/options.txt") {
+bool saveOptions(json obj, int ignoreLevel, std::string path) {
     bool sucsessfull = true; // Whether or not the saving was sucsessfull
 
     // loop through all keys in options object
@@ -405,7 +301,7 @@ bool saveOptions(json obj, int ignoreLevel = 0, std::string path = "data/options
         if (ignoreLevel == 1 && it.key().substr(0,4) == "key_") { continue; }
         if (ignoreLevel == 2 && it.key().substr(0,4) != "key_") { continue; }
 
-        if ( ! setOption(it.key(), std::string(it.value()), path) ) {
+        if ( ! options::setOption(it.key(), std::string(it.value()), path) ) {
             sucsessfull = false;
         }
     }
@@ -422,7 +318,7 @@ bool saveOptions(json obj, int ignoreLevel = 0, std::string path = "data/options
  * @return true The creation was sucsessfull; 
  * @return false The creation failed
  */
-bool createOptionsFile(bool force = false, std::string path = "data/options.txt", json optionsStruct = defaultOptionsStruct) {
+bool createOptionsFile(bool force, std::string path, json optionsStruct) {
     // check if the file exists
     if (std::filesystem::is_regular_file(path) && ! force) { return false; }
 
@@ -446,13 +342,13 @@ bool createOptionsFile(bool force = false, std::string path = "data/options.txt"
         bool tmp = true;
         // if the key has a comment
         if (it.value()["comments"] != nullptr) {
-            tmp = writeToLastLine(std::string(it.value()["comments"]), path);
+            tmp = options::writeToLastLine(std::string(it.value()["comments"]), path);
             // check for "errors"
             if (tmp) {sucsessfull = false;}
         }
         // if the key has a value
         if (it.value() != nullptr) {
-            tmp = setOption(it.key(), std::string(it.value()["val"]), path);
+            tmp = options::setOption(it.key(), std::string(it.value()["val"]), path);
             // check for "errors"
             if (tmp) {sucsessfull = false;}
         }
@@ -466,7 +362,7 @@ bool createOptionsFile(bool force = false, std::string path = "data/options.txt"
  * @param path The path to the options file
  * @return bool Whether or not the operation was sucsessfull
  */
-bool deleteOptionsFile(std::string path = "data/options.txt") {
+bool deleteOptionsFile(std::string path) {
     // check if the options file exists
     if (! std::filesystem::is_regular_file(path) ) { return true; }
 
@@ -482,39 +378,43 @@ bool deleteOptionsFile(std::string path = "data/options.txt") {
  * @param local_path The path to the M++ options file
  * @return bool Whether or not the operation was sucsessfull
  */
-bool importConfig(std::string localOptPath = "data/options.txt", bool doKeyBinds = true, std::string localKeyPath = "data/keyBinds.txt") {
-    /*
-    ToDo:
+bool importConfig(std::string localOptPath, bool doKeyBinds, std::string localKeyPath) {
+    std::string minecraftPath;
+    std::string delimeter;
+    // set minecraft path based on operating system
+    std::string os = getOsName();
+    // linux path
+    if (os == "Linux") { minecraftPath = "/home/justus/.minecraft/"; delimeter = "/"; }
+    else if (os.substr(0,7) == "Windows") { minecraftPath = "%appdata%\\.minecraft\\"; delimeter = "\\"; }
+    else { return false; }
+    // check if file exists
+    if (! std::filesystem::is_regular_file(minecraftPath+"options.txt") ) { return false; }
+    // read minecraft options file
+    json mcOptions = options::getRawOptions(minecraftPath+"options.txt");
+    // check if local options file exists
+    if (! std::filesystem::is_regular_file(localOptPath) ) {
+       // create options file
+       options::createOptionsFile(false, localOptPath);
+    }
+    if (! std::filesystem::is_regular_file(localKeyPath) && doKeyBinds ) {
+       // create options file
+       options::createOptionsFile(false, localKeyPath, json::parse("{}"));
+    }
+    // save to local file
+    options::saveOptions(mcOptions, 1, localOptPath); // set normal options
+    // replace key bind LWJGE key codes to names
 
-    - Get the minecraft options file
-    - load it
-    - create local options file
-    - save minecraft options file to local file
-    
-    */
-   std::string minecraftPath;
-   std::string delimeter;
-   // set minecraft path based on operating system
-   std::string os = getOsName();
-   // linux path
-   if (os == "Linux") { minecraftPath = "/home/justus/.minecraft/"; delimeter = "/"; }
-   else if (os.substr(0,7) == "Windows") { minecraftPath = "%appdata%\\.minecraft\\"; delimeter = "\\"; }
-   else { return false; }
-   // check if file exists
-   if (! std::filesystem::is_regular_file(minecraftPath+"options.txt") ) { return false; }
-   // read minecraft options file
-   json mcOptions = getRawOptions(minecraftPath+"options.txt");
-   // check if local options file exists
-   if (! std::filesystem::is_regular_file(localOptPath) ) {
-      // create options file
-      createOptionsFile(false, localOptPath);
-   }
-   if (! std::filesystem::is_regular_file(localKeyPath) && doKeyBinds ) {
-      // create options file
-      createOptionsFile(false, localKeyPath);
-   }
-   // save to local file
-   saveOptions(mcOptions, 1, localOptPath); // set normal options
-   if (doKeyBinds) { saveOptions(mcOptions, 2, localKeyPath); } // set key binds
+    if (doKeyBinds) {
+        for (json::iterator it = mcOptions.begin(); it != mcOptions.end(); it++) {
+            if (it.key().substr(0,4) == "key_") {
+                mcOptions[it.key()] = LWJGEKeys::convertKey( 30 );
+            }
+        }
+    }
+
+   if (doKeyBinds) { options::saveOptions(mcOptions, 2, localKeyPath); } // set key binds
    return true;
+}
+
+// End of namespace
 }
