@@ -10,9 +10,9 @@
   - freeglut (`sudo apt install freeglut3-dev`)
   - gl       (`sudo apt install libgl-dev`)
   - glew     (`sudo apt install libglew-dev`)
-  - libzip   (`sudo apt install libzip-dev`)
+  - libzip   (`sudo apt install libzip-dev` or https://libzip.org/download/)
+  - curl     (ˋsudo apt install libcurl-devˋ or https://curl.se/download.html)
 (Included)
-  - curl
   - nlohmann/json
   - elnormous/HTTPRequest
 
