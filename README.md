@@ -12,6 +12,7 @@
   - glew     (`sudo apt install libglew-dev`)
   - libzip   (`sudo apt install libzip-dev` or https://libzip.org/download/)
   - curl     (`sudo apt install libcurl-dev` or https://curl.se/download.html)
+
 (Included)
   - nlohmann/json
   - elnormous/HTTPRequest
