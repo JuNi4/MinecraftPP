@@ -6,7 +6,7 @@
 #include <utils.hpp>
 
 #include "options.hpp"
-#include "keyCodes.h"
+#include "keyCodes.hpp"
 
 using json = nlohmann::json;
 

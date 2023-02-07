@@ -1,12 +1,12 @@
 CXX		  := g++
-CXX_FLAGS := -Wall -Wextra -std=c++11 -ggdb
+CXX_FLAGS := -Wall -Wextra -std=c++20 -ggdb
 
 BIN		:= bin
 SRC		:= src
 INCLUDE	:= include
 LIB		:= lib
 
-LIBRARIES	:= src/options/*.cpp
+LIBRARIES	:= -lcurl -lzip src/options/keyCodes.cpp
 EXECUTABLE	:= main
 
 #  -lcurl -lzip

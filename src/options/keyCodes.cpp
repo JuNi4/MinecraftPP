@@ -1,4 +1,4 @@
-#include "keyCodes.h"
+#include "keyCodes.hpp"
 
 namespace LWGEKeys {
 
