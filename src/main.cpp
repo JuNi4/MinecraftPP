@@ -1,8 +1,7 @@
 #include <nlohmann/json.hpp>
 #include <iostream>
 
-#include <getAssets/getAssets.cpp>
-#include <options/options.cpp>
+#include "options/options.hpp"
 //#include <options/keyCodes.cpp>
 //#include <getAssets/getAssets.cpp>
 
