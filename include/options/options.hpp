@@ -1,8 +1,5 @@
 #include <nlohmann/json.hpp>
 #include <iostream>
-#include <fstream>
-#include <filesystem>
-#include <limits>
 
 using json = nlohmann::json;
 
@@ -16,15 +13,15 @@ namespace options {
 /**
  * @brief the FPS cap of the game
 */
-int FPS = 60;
+int FPS;
 /**
  * @brief the Render Distance of the game. Not yet in chunks
 */
-double renderDistance = 10;
+int renderDistance = 10;
 /**
  * @brief The FOV of the camera
 */
-float FOV = 45;
+int FOV = 45;
 /**
  * @brief wether or not the fps should be printed to the console
 */
@@ -88,7 +85,9 @@ nlohmann::json defaultOptionsStruct = json::parse(R"(
         "brand":{"val": "Minecraft++", "comments": "# Brand of the minecraft client (only used in F3 menu)\n# Default: Minecraft++"},
         "sendBrand":{"val": "true", "comments": "# Wether or not the Minecraft++ brand should be send to the server\n# If not, the client will tell a server, that it is a vanilla client\n# It will disable client specific features, that are requested by a server like custom ui's\n# Default: true"}
     }
-)");          
+)");
+
+};
 
 /**
  * @brief Set the value type of the values in a json object
@@ -173,7 +172,5 @@ bool deleteOptionsFile(std::string path = "data/options.txt");
  * @return bool Whether or not the operation was sucsessfull
  */
 bool importConfig(std::string localOptPath = "data/options.txt", bool doKeyBinds = true, std::string localKeyPath = "data/keyBinds.txt");
-
-}
 
 #endif

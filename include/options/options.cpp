@@ -10,8 +10,6 @@
 
 using json = nlohmann::json;
 
-namespace options {
-
 /**
  * @brief Set the value type of the values in a json object
  * 
@@ -78,7 +76,7 @@ nlohmann::json getOptions(std::string path) {
             // Set Options
             j[name] = value;
         }
-        return options::setOptionValuetypes(j);
+        return setOptionValuetypes(j);
     }
     else {
         std::cerr << "Couldn't open config file for reading.\n";
@@ -301,7 +299,7 @@ bool saveOptions(json obj, int ignoreLevel, std::string path) {
         if (ignoreLevel == 1 && it.key().substr(0,4) == "key_") { continue; }
         if (ignoreLevel == 2 && it.key().substr(0,4) != "key_") { continue; }
 
-        if ( ! options::setOption(it.key(), std::string(it.value()), path) ) {
+        if ( ! setOption(it.key(), std::string(it.value()), path) ) {
             sucsessfull = false;
         }
     }
@@ -342,13 +340,13 @@ bool createOptionsFile(bool force, std::string path, json optionsStruct) {
         bool tmp = true;
         // if the key has a comment
         if (it.value()["comments"] != nullptr) {
-            tmp = options::writeToLastLine(std::string(it.value()["comments"]), path);
+            tmp = writeToLastLine(std::string(it.value()["comments"]), path);
             // check for "errors"
             if (tmp) {sucsessfull = false;}
         }
         // if the key has a value
         if (it.value() != nullptr) {
-            tmp = options::setOption(it.key(), std::string(it.value()["val"]), path);
+            tmp = setOption(it.key(), std::string(it.value()["val"]), path);
             // check for "errors"
             if (tmp) {sucsessfull = false;}
         }
@@ -390,31 +388,28 @@ bool importConfig(std::string localOptPath, bool doKeyBinds, std::string localKe
     // check if file exists
     if (! std::filesystem::is_regular_file(minecraftPath+"options.txt") ) { return false; }
     // read minecraft options file
-    json mcOptions = options::getRawOptions(minecraftPath+"options.txt");
+    json mcOptions = getRawOptions(minecraftPath+"options.txt");
     // check if local options file exists
     if (! std::filesystem::is_regular_file(localOptPath) ) {
        // create options file
-       options::createOptionsFile(false, localOptPath);
+       createOptionsFile(false, localOptPath);
     }
     if (! std::filesystem::is_regular_file(localKeyPath) && doKeyBinds ) {
        // create options file
-       options::createOptionsFile(false, localKeyPath, json::parse("{}"));
+       createOptionsFile(false, localKeyPath, json::parse("{}"));
     }
     // save to local file
-    options::saveOptions(mcOptions, 1, localOptPath); // set normal options
+    saveOptions(mcOptions, 1, localOptPath); // set normal options
     // replace key bind LWJGE key codes to names
 
     if (doKeyBinds) {
         for (json::iterator it = mcOptions.begin(); it != mcOptions.end(); it++) {
             if (it.key().substr(0,4) == "key_") {
-                mcOptions[it.key()] = LWJGEKeys::convertKey( 30 );
+                mcOptions[it.key()] = convertKey( std::stoi(std::string( it.value() )) );
             }
         }
     }
 
-   if (doKeyBinds) { options::saveOptions(mcOptions, 2, localKeyPath); } // set key binds
+   if (doKeyBinds) { saveOptions(mcOptions, 2, localKeyPath); } // set key binds
    return true;
-}
-
-// End of namespace
 }
