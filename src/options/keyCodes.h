@@ -1,3 +1,9 @@
+/**
+ * @brief Convert LWJGE key codes to names as const char*
+ * @author JuNi4
+ * @date 2023/02/06 06.02.2023
+*/
+
 #ifndef _KEYCODES_H_
 #define _KEYCODES_H_
 #pragma once
