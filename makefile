@@ -1,5 +1,5 @@
 CXX		  := g++
-CXX_FLAGS := -Wall -Wextra -std=c++11 -ggdb
+CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb -fconcepts
 
 BIN		:= bin
 SRC		:= src
@@ -10,7 +10,8 @@ LIBRARIES	:= src/options/*.cpp
 EXECUTABLE	:= main
 
 #  -lcurl -lzip
-# for some reason, this is not working on gh code space
+# In gh codespaces, use -std=c++17
+# And remove -lcurl and -lzip from compiler
 
 all: $(BIN)/$(EXECUTABLE)
 
