@@ -6,7 +6,7 @@ SRC		:= src
 INCLUDE	:= include
 LIB		:= lib
 
-LIBRARIES	:= -lcurl -lzip include/options/*.cpp
+LIBRARIES	:=
 EXECUTABLE	:= main
 
 #  -lcurl -lzip

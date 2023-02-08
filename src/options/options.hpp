@@ -1,3 +1,9 @@
+/**
+ * @brief Everything for the optionsfile
+ * @author JuNi4
+ * @date 2023/02/8 08.02.2023
+*/
+
 #include <nlohmann/json.hpp>
 #include <iostream>
 
