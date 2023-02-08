@@ -160,13 +160,14 @@ namespace LWJGEKeys {
         const int mouse_13 = -87;
         const int mouse_14 = -86;
         const int mouse_15 = -85;
-        /**
-         * @brief Convert any LWJGE key code to key names
-         * 
-         * @param keyCode The LWJGE key code to be converted
-         * @return const char* the key name
-         */
-        const char* convertKey(int keyCode);
+
 };
+/**
+ * @brief Convert any LWJGE key code to key names
+ * 
+ * @param keyCode The LWJGE key code to be converted
+ * @return const char* the key name
+ */
+const char* convertKey(int keyCode);
 
 #endif

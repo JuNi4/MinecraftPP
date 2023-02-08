@@ -1,6 +1,4 @@
-#include "keyCodes.h"
-
-namespace LWGEKeys {
+#include "keyCodes.hpp"
 
 const char* convertKey(int keyCode) {
     // return the correct const char*
@@ -135,6 +133,4 @@ const char* convertKey(int keyCode) {
     
     default: return "none";
     }
-}
-// End of namespace LWJGEKeys
 }
