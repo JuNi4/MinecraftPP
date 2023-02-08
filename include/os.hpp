@@ -1,0 +1,65 @@
+/**
+ * @file os.hpp
+ * @author JuNi4
+ * @brief Simple os related things
+ * @date 2023-02-08
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+*/
+
+#include <iostream>
+
+namespace os {
+
+/**
+ * @brief gets the type of the operating system
+*/
+std::string getOsName()
+{
+    #ifdef _WIN32
+    return "Windows 32-bit";
+    #elif _WIN64
+    return "Windows 64-bit";
+    #elif __APPLE__ || __MACH__
+    return "Mac OSX";
+    #elif __linux__
+    return "Linux";
+    #elif __FreeBSD__
+    return "FreeBSD";
+    #elif __unix || __unix__
+    return "Unix";
+    #else
+    return "Other";
+    #endif
+}
+
+std::string getOsDelimiter()
+{
+    #ifdef _WIN32
+    return "\\";
+    #elif _WIN64
+    return "\\";
+    #elif __APPLE__ || __MACH__
+    return "/";
+    #elif __linux__
+    return "/";
+    #elif __FreeBSD__
+    return "/";
+    #elif __unix || __unix__
+    return "/";
+    #else
+    return "/";
+    #endif
+}
+
+std::string getUserName() {
+    #ifdef __linux__
+    return std::getenv("USER");
+    #else
+    return "NONE";
+    #endif
+}
+
+// end of namespace
+};

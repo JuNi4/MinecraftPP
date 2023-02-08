@@ -1,7 +1,7 @@
 /**
  * @brief Everything for the optionsfile
  * @author JuNi4
- * @date 2023/02/8 08.02.2023
+ * @date 2023-02-08
 */
 
 #include <nlohmann/json.hpp>
@@ -10,8 +10,10 @@
 #include <filesystem>
 #include <limits>
 #include <utils.hpp>
+#include <os.hpp>
+#include <string>
 
-#include <keyCodesSingle.hpp>
+#include <keyCodes.hpp>
 
 using json = nlohmann::json;
 
@@ -99,7 +101,89 @@ nlohmann::json defaultOptionsStruct = json::parse(R"(
     }
 )");
 
+nlohmann::json defaultKeyBindStruct = json::parse(R"(
+    {
+        "key_key.advancements":{"val": "l"},
+        "key_key.attack":{"val": "lmb"},
+        "key_key.back":{"val": "s"},
+        "key_key.chat":{"val": "t"},
+        "key_key.command":{"val": "slash"},
+        "key_key.drop":{"val": "q"},
+        "key_key.forward":{"val": "w"},
+        "key_key.fullscree:":{"val": "f11"},
+        "key_key.hotbar.1":{"val": "1"},
+        "key_key.hotbar.2":{"val": "2"},
+        "key_key.hotbar.3":{"val": "3"},
+        "key_key.hotbar.4":{"val": "4"},
+        "key_key.hotbar.5":{"val": "5"},
+        "key_key.hotbar.6":{"val": "6"},
+        "key_key.hotbar.7":{"val": "7"},
+        "key_key.hotbar.8":{"val": "8"},
+        "key_key.hotbar.9":{"val": "9"},
+        "key_key.inventory":{"val": "e"},
+        "key_key.jump":{"val": "space"},
+        "key_key.left":{"val": "a"},
+        "key_key.loadToolbarActivator":{"val": "x"},
+        "key_key.pickItem":{"val": "mmb"},
+        "key_key.playerlist":{"val": "tab"},
+        "key_key.right":{"val": "d"},
+        "key_key.saveToolbarActivator":{"val": "c"},
+        "key_key.screenshot":{"val": "f2"},
+        "key_key.smoothCamera":{"val": "none"},
+        "key_key.sneak":{"val": "lshift"},
+        "key_key.socialInteractions":{"val": "p"},
+        "key_key.spectatorOutlines":{"val": "none"},
+        "key_key.sprint":{"val": "lctrl"},
+        "key_key.swapOffhand":{"val": "f"},
+        "key_key.togglePerspective":{"val": "f5"},
+        "key_key.use":{"val": "rmb"},
+        "key_key.zoom":{"val": "v"}
+    }
+)");
 
+/**
+ * @brief  The name of the options file
+ */
+std::string optionsFileName = "options.txt";
+/**
+ * @brief The name of the key binds file
+ */
+std::string keyBindsFileName = "keyBinds.txt";
+
+/**
+ * @brief Get the path to the options file
+ * 
+ * @return std::string Path to options file
+ */
+std::string defaultOptionsPath() {
+    std::string delimeter = os::getOsDelimiter();
+    return "data"+delimeter+optionsFileName;
+}
+
+/**
+ * @brief Get the Minecraft Path
+ * 
+ * @return std::string The path of minecraft
+ */
+std::string getMcPath() {
+    // set minecraft path based on operating system
+    std::string os = os::getOsName();
+    // linux path
+    if (os == "Linux") { return "/home/"+os::getUserName()+"/.minecraft/"; }
+    // Windows path
+    else if (os.substr(0,7) == "Windows") { return "C:\\Users\\"+os::getUserName()+"\\AppData\\Roaming\\.minecraft\\"; }
+    else { return ""; }
+}
+
+/**
+ * @brief Get the path to the key binds file
+ * 
+ * @return std::string Path to key binds file
+ */
+std::string defaultKeyBindsPath() {
+    std::string delimeter = os::getOsDelimiter();
+    return "data"+delimeter+keyBindsFileName;
+}
 
 /**
  * @brief Set the value type of the values in a json object
@@ -147,7 +231,7 @@ nlohmann::json setOptionValuetypes(nlohmann::json jobj) {
  * @param path The path to the options.txt
  * @return nlohmann::json The json object containing all the options (with mostly correct types). In case of am error, the object will contain a key called "error" containing some detail of the error
  */
-nlohmann::json getOptions(std::string path = "data/options.txt") {
+nlohmann::json getOptions(std::string path = defaultOptionsPath()) {
     // check if options file exists
     if (!std::filesystem::is_regular_file(path)) { return json::parse(R"({"error": "404: options file not found!"})"); }
     nlohmann::json j;
@@ -181,7 +265,7 @@ nlohmann::json getOptions(std::string path = "data/options.txt") {
  * @param path The path to the options.txt
  * @return nlohmann::json The json object containing all the options. In case of am error, the object will contain a key called "error" containing some detail of the error
  */
-nlohmann::json getRawOptions(std::string path = "data/options.txt") {
+nlohmann::json getRawOptions(std::string path = defaultOptionsPath()) {
     // check if options file exists
     if (!std::filesystem::is_regular_file(path)) { return json::parse(R"({"error": "options file not found!"})"); }
     nlohmann::json j;
@@ -218,7 +302,7 @@ nlohmann::json getRawOptions(std::string path = "data/options.txt") {
  * @return true The operation was succsessfull,
  * @return false The operation failed succsessfully
  */
-bool setOption(std::string key, auto value, std::string path = "data/options.txt") {
+bool setOption(std::string key, auto value, std::string path = defaultOptionsPath()) {
     //std::cout << key << " " << value << " " << path << "\n";
     // check if options file exists
     if (!std::filesystem::is_regular_file(path)) { return false; }
@@ -338,7 +422,7 @@ bool setOption(std::string key, auto value, std::string path = "data/options.txt
  * @return true The writing was sucsessfull; 
  * @return false The writing failed
  */
-bool writeToLastLine(std::string value, std::string path = "data/options.txt") {
+bool writeToLastLine(std::string value, std::string path = defaultOptionsPath()) {
     // check if the file exists
     if (! std::filesystem::is_regular_file(path)) { return false; }
 
@@ -381,7 +465,7 @@ bool writeToLastLine(std::string value, std::string path = "data/options.txt") {
  * @param ignoreLevel The level of ignorance. 0 = Nothing; 1 = key binds; 2 = regular options.
  * @param path The path to the options file
  */
-bool saveOptions(json obj, int ignoreLevel = 0, std::string path = "data/options.txt") {
+bool saveOptions(json obj, int ignoreLevel = 0, std::string path = defaultOptionsPath()) {
     bool sucsessfull = true; // Whether or not the saving was sucsessfull
 
     // loop through all keys in options object
@@ -390,7 +474,27 @@ bool saveOptions(json obj, int ignoreLevel = 0, std::string path = "data/options
         if (ignoreLevel == 1 && it.key().substr(0,4) == "key_") { continue; }
         if (ignoreLevel == 2 && it.key().substr(0,4) != "key_") { continue; }
 
-        if ( ! setOption(it.key(), std::string(it.value()), path) ) {
+        // convert value to string
+        std::string tmp;
+        if (it.value() == true) { tmp = "true"; }
+        else if (it.value() == false) { tmp = "false"; }
+        else if (it.value().is_number_integer()) {
+            int tmp2 = it.value();
+            tmp = std::to_string(tmp2);
+        }
+        else if (it.value().is_number_float()) {
+            float tmp2 = it.value();
+            tmp = std::to_string(tmp2);
+            tmp = tmp.substr(0, tmp.find(".") + 3);
+        }
+        else if (it.value().is_number_unsigned()) {
+            unsigned tmp2 = it.value();
+            tmp = std::to_string(tmp2);
+        }
+        else { tmp = it.value(); }
+        
+
+        if ( ! setOption(it.key(), tmp, path) ) {
             sucsessfull = false;
         }
     }
@@ -407,7 +511,7 @@ bool saveOptions(json obj, int ignoreLevel = 0, std::string path = "data/options
  * @return true The creation was sucsessfull; 
  * @return false The creation failed
  */
-bool createOptionsFile(bool force = false, std::string path = "data/options.txt", json optionsStruct = options::defaultOptionsStruct) {
+bool createOptionsFile(bool force = false, std::string path = defaultOptionsPath(), json optionsStruct = defaultOptionsStruct) {
     // check if the file exists
     if (std::filesystem::is_regular_file(path) && ! force) { return false; }
 
@@ -419,9 +523,7 @@ bool createOptionsFile(bool force = false, std::string path = "data/options.txt"
     // Create a file
 
     std::ofstream file (path);
-
     file << "";
-
     file.close();
 
     bool sucsessfull = true;
@@ -451,7 +553,7 @@ bool createOptionsFile(bool force = false, std::string path = "data/options.txt"
  * @param path The path to the options file
  * @return bool Whether or not the operation was sucsessfull
  */
-bool deleteOptionsFile(std::string path = "data/options.txt") {
+bool deleteOptionsFile(std::string path = defaultOptionsPath()) {
     // check if the options file exists
     if (! std::filesystem::is_regular_file(path) ) { return true; }
 
@@ -467,15 +569,8 @@ bool deleteOptionsFile(std::string path = "data/options.txt") {
  * @param local_path The path to the M++ options file
  * @return bool Whether or not the operation was sucsessfull
  */
-bool importConfig(std::string localOptPath = "data/options.txt", bool doKeyBinds = true, std::string localKeyPath = "data/keyBinds.txt") {
-    std::string minecraftPath;
-    std::string delimeter;
-    // set minecraft path based on operating system
-    std::string os = getOsName();
-    // linux path
-    if (os == "Linux") { minecraftPath = "/home/justus/.minecraft/"; delimeter = "/"; }
-    else if (os.substr(0,7) == "Windows") { minecraftPath = "%appdata%\\.minecraft\\"; delimeter = "\\"; }
-    else { return false; }
+bool importConfig(std::string localOptPath = defaultOptionsPath(), bool doKeyBinds = true, std::string localKeyPath = defaultKeyBindsPath()) {
+    std::string minecraftPath = getMcPath();
     // check if file exists
     if (! std::filesystem::is_regular_file(minecraftPath+"options.txt") ) { return false; }
     // read minecraft options file

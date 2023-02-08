@@ -272,12 +272,13 @@ const char* convertKey(int keyCode) {
     case LWJGEKeys::key_decimal: return "decimal";
     case LWJGEKeys::key_scroll: return "scroll";
     case LWJGEKeys::key_space: return "space";
-    case LWJGEKeys::key_capital: return "capital";
+    case LWJGEKeys::key_capital: return "caps";
     case LWJGEKeys::key_backslash: return "backslash";
     case LWJGEKeys::key_slash: return "slash";
     case LWJGEKeys::key_power: return "power";
     case LWJGEKeys::key_lmeta: return "lwin";
     case LWJGEKeys::key_rmeta: return "rwin";
+    case LWJGEKeys::key_tab: return "tab";
     // Mouse buttons
     case LWJGEKeys::mouse_left: return "lmb";
     case LWJGEKeys::mouse_right: return "rmb";

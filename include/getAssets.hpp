@@ -1,4 +1,14 @@
-#include "getAssets.hpp"
+/**
+ * @file getAssets.hpp
+ * @author JuNi4
+ * @brief Downloads all assets from mojang
+ * @version 0.1
+ * @date 2023-01-29
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include <iostream>
 #include <fstream>
 
@@ -8,12 +18,16 @@
 #include <zip.h> // Install using 'sudo apt install libzip-dev'
 #include <filesystem>
 
+//#include <utils.hpp>
+
 using json = nlohmann::json;
 
-int len(auto value) {
-    return end(value) - begin(value);
-}
-
+/**
+ * @brief posts a http get request
+ * 
+ * @param url the url to post the get request to, https is automaticly replaced with http
+ * @return std::string the body of the response
+ */
 std::string httpGet(std::string url) {
     try {
     // Replace https with http
@@ -33,6 +47,12 @@ std::string httpGet(std::string url) {
     }
 }
 
+/**
+ * @brief downloads a file from a url
+ * 
+ * @param url the url to get the file from
+ * @return int 
+ */
 int downloadFile(const char* url, const char* filename) {
     CURL *curl;
     FILE *fp;
@@ -51,7 +71,13 @@ int downloadFile(const char* url, const char* filename) {
     return 0;
 }
 
-// for string delimiter
+/**
+ * @brief Splits a string at every delimiter
+ * 
+ * @param s The string to be split
+ * @param delimiter The delimiter at which to split the string
+ * @return std::vector<std::string> 
+ */
 std::vector<std::string> split (std::string s, std::string delimiter) {
     size_t pos_start = 0, pos_end, delim_len = delimiter.length();
     std::string token;
@@ -67,6 +93,12 @@ std::vector<std::string> split (std::string s, std::string delimiter) {
     return res;
 }
 
+/**
+ * @brief Get the Version Meta json object from mojang
+ * 
+ * @param version the minecraft version to get data from
+ * @return json object containing the data of the version or the error
+ */
 json getVersionMeta(std::string version) {
     // load the request body in a json object
     json version_master_list = json::parse(httpGet("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"));
@@ -105,6 +137,11 @@ json getVersionMeta(std::string version) {
     return version_data;
 }
 
+/**
+ * @brief Download and extract the assets from a minecraft jar
+ * 
+ * @param version the minecraft version to get assets from
+ */
 void getAssets(std::string version, std::string base_path) {
     std::cout << "Getting Assets..." << std::endl;
     // if minecraft folder exists
@@ -149,7 +186,7 @@ void getAssets(std::string version, std::string base_path) {
 
             std::vector<std::string> v = split (folder, "/");
 
-            folder = folder.substr(0,len(folder)-len(v[len(v)-1]));
+            folder = folder.substr(0,length(folder)-length(v[length(v)-1]));
 
             if ( !std::filesystem::is_directory(base_path+folder) ) {
                 std::filesystem::create_directories(base_path+folder);
@@ -162,7 +199,7 @@ void getAssets(std::string version, std::string base_path) {
             zip_file *f = zip_fopen(z, sb.name, 0);
             zip_fread(f, contents, sb.size);
             zip_fclose(f);
-            if(!std::ofstream((base_path+folder + v[len(v)-1]).c_str()).write(contents, sb.size))
+            if(!std::ofstream((base_path+folder + v[length(v)-1]).c_str()).write(contents, sb.size))
             {
                 std::cerr << "Error writing file " << EXIT_FAILURE << '\n';
             }
@@ -174,6 +211,11 @@ void getAssets(std::string version, std::string base_path) {
     std::cout << "Done getting assets!" << std::endl;
 }
 
+/**
+ * @brief Dowwnload the resources from mojang
+ * 
+ * @param version the minecraft version to get assets from
+ */
 void getResources(std::string version, std::string base_path) {
     std::cout << "Getting resources..." << std::endl;
     std::string BASE_URL = "https://resources.download.minecraft.net/";
@@ -211,7 +253,7 @@ void getResources(std::string version, std::string base_path) {
 
         std::vector<std::string> v = split (folder, "/");
 
-        folder = folder.substr(0,len(folder)-len(v[len(v)-1]));
+        folder = folder.substr(0,length(folder)-length(v[length(v)-1]));
 
         if ( !std::filesystem::is_directory(folder) ) {
             std::filesystem::create_directories(folder);
