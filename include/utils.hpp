@@ -3,6 +3,9 @@
  * 
  */
 
+#ifndef _UTILS_H_
+#define _UTILS_H_
+
 /**
  * @brief gets the length of a string
  * 
@@ -12,3 +15,5 @@
 int length(auto value) {
     return end(value) - begin(value);
 }
+
+#endif

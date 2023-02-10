@@ -9,6 +9,9 @@
  * 
  */
 
+#ifndef _GETASSETS_H_
+#define _GETASSETS_H_
+
 #include <iostream>
 #include <fstream>
 
@@ -270,3 +273,5 @@ void getResources(std::string version, std::string base_path) {
     }
     std::cout << "Done getting assets!" << std::endl;
 }
+
+#endif
