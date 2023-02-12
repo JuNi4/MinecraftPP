@@ -8,6 +8,9 @@
  * 
 */
 
+#ifndef _OS_H_
+#define _OS_H_
+
 #include <iostream>
 
 namespace os {
@@ -63,3 +66,5 @@ std::string getUserName() {
 
 // end of namespace
 };
+
+#endif
