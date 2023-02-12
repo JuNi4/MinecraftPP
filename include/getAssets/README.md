@@ -26,8 +26,7 @@ Downloads the assets, contained in the version jar file, from Mojang
 
 Downloads the Resources, the Minecraft launcher downloads. This may take up to 10 minutes or more, depending on your connection speed.
 
-`version` Being the Minecraft version to get the assets from
-
+`version` Being the Minecraft version to get the assets from\
 `base_path` Is the place, where the assets will be downloaded to.
 
 Quick Demo:
