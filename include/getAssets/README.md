@@ -10,15 +10,24 @@ A simple library for downloading assets from Mojang
   - elnormous/HTTPRequest (https://github.com/elnormous/HTTPRequest)
 
 -- Quick help --
+
 (Because there are only three simple functions)
+
 `getAssets( std::string version, std::string base_path = "" )`
+
 Downloads the assets, contained in the version jar file, from Mojang
+
 `version` Being the Minecraft version to get the assets from
+
 `base_path` Is the place, where the assets will be downloaded to.
 
+
 `getResources( std::string version, std::string base_path = "" )`
+
 Downloads the Resources, the Minecraft launcher downloads. This may take up to 10 minutes or more, depending on your connection speed.
+
 `version` Being the Minecraft version to get the assets from
+
 `base_path` Is the place, where the assets will be downloaded to.
 
 Quick Demo:
