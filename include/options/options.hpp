@@ -1,7 +1,9 @@
 /**
+ * @file options.hpp
  * @brief Everything for the optionsfile
- * @author JuNi4
+ * @author @JuNi4
  * @date 2023-02-08
+ * @copyright Copyright (c) 2023
 */
 
 #include <nlohmann/json.hpp>
@@ -13,7 +15,7 @@
 #include <os.hpp>
 #include <string>
 
-#include <keyCodes.hpp>
+#include "keyCodes.hpp"
 
 using json = nlohmann::json;
 
@@ -358,6 +360,7 @@ bool setOption(std::string key, auto value, std::string path = defaultOptionsPat
                 for (int i = 0; i <= length(line)-length(setting); i++) {
                     tmp += " ";
                 }
+                tmp += "\n";
             }
         }
 
@@ -485,7 +488,7 @@ bool saveOptions(json obj, int ignoreLevel = 0, std::string path = defaultOption
         else if (it.value().is_number_float()) {
             float tmp2 = it.value();
             tmp = std::to_string(tmp2);
-            tmp = tmp.substr(0, tmp.find(".") + 3);
+            tmp = tmp.substr(0, it.value().size());
         }
         else if (it.value().is_number_unsigned()) {
             unsigned tmp2 = it.value();
