@@ -5,7 +5,7 @@ A library for everyting related to the options.txt
 
 Demo script:
 ```cpp
-// -- Demo Options file creator --
+// -- Demo Options file implementaion --
 // delete the option files (only if they exist)
 options::deleteOptionsFile();
 options::deleteOptionsFile(options::defaultKeyBindsPath());
