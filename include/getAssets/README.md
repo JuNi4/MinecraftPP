@@ -22,6 +22,10 @@ Downloads the Resources, the Minecraft launcher downloads. This may take up to 1
 `version` Being the Minecraft version to get the assets from\
 `base_path` Is the place, where the assets will be downloaded to.
 
+`json getVersionMeta( std::string version )`\
+Gets the information for a version. The Json object contains things like where to get the client.jar from.\
+`version` Being the Minecraft version to get the assets from
+
 Quick Demo:
 ```cpp
 #include <getAssets/getAssets.hpp>
