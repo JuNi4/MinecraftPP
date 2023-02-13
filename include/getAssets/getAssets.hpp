@@ -145,7 +145,7 @@ json getVersionMeta(std::string version) {
  * 
  * @param version the minecraft version to get assets from
  */
-void getAssets(std::string version, std::string base_path = "") {
+void getAssets(std::string version, std::string base_path = "assets/") {
     std::cout << "Getting Assets..." << std::endl;
     // if minecraft folder exists
     if ( std::filesystem::is_directory(base_path+"minecraft") ) {
@@ -219,7 +219,7 @@ void getAssets(std::string version, std::string base_path = "") {
  * 
  * @param version the minecraft version to get assets from
  */
-void getResources(std::string version, std::string base_path = "") {
+void getResources(std::string version, std::string base_path = "assets/") {
     std::cout << "Getting resources..." << std::endl;
     std::string BASE_URL = "https://resources.download.minecraft.net/";
     // if minecraft folder exists

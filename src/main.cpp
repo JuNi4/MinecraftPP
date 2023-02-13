@@ -2,11 +2,14 @@
 #include <iostream>
 
 #include <options/options.hpp>
-#include <getAssets/getAssets.hpp>
+//#include <getAssets/getAssets.hpp>
+#include <comms/comm.h>
 
 using json = nlohmann::json;
 
 int main() {
-    getAssets("1.19.3");
+    server stest;
+    std::cout << stest.ip << std::endl;
+    std::cout << stest.status()["error"] << std::endl;
     return 0;
 }

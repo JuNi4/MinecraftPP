@@ -6,7 +6,7 @@ SRC		:= src
 INCLUDE	:= include
 LIB		:= lib
 
-LIBRARIES	:= -lcurl -lzip
+LIBRARIES	:= include/comms/comm.cpp
 EXECUTABLE	:= main
 
 #  -lcurl -lzip
