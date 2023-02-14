@@ -1,6 +1,8 @@
 # Minecraft++
  Minecraft in cpp with OpenGL
 
+Note: Minecraft++ is currently in developement and may not be functional at all. Currently only 2 persons are working on this wich means that developement may take a while.
+
 ## Supported operating systems:
 - Linux (only tested on Debian)
 
