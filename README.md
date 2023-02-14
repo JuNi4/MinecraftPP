@@ -25,5 +25,3 @@ In addition to that, if Minecraft++ detects on options.txt from your default min
 
 ## Running/compiling Minecraft++
 Once Minecraft++ is finished / usable, you can run it by compiling it with `make` and then running it with `./bin/main` or compiling and running by using `make run`.
-
-// Note: Minecraft Server Communication Documentation: https://wiki.vg/Main_Page
