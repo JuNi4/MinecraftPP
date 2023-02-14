@@ -25,6 +25,9 @@
 
 using json = nlohmann::json;
 
+// just so that these are not used unintentionally outside of this file or conflict with anything
+namespace getAssetsInternal {
+
 /**
  * @brief posts a http get request
  * 
@@ -96,6 +99,9 @@ std::vector<std::string> split (std::string s, std::string delimiter) {
     return res;
 }
 
+// End of namespace
+}
+
 /**
  * @brief Get the Version Meta json object from mojang
  * 
@@ -104,7 +110,7 @@ std::vector<std::string> split (std::string s, std::string delimiter) {
  */
 json getVersionMeta(std::string version) {
     // load the request body in a json object
-    json version_master_list = json::parse(httpGet("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"));
+    json version_master_list = json::parse(getAssetsInternal::httpGet("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"));
     // Print the version id
     json version_list = version_master_list["versions"];
     if (version_list == nullptr) {return json::parse(R"({error": "someting went wrong while getting version info"})");} // check for errors
@@ -135,7 +141,7 @@ json getVersionMeta(std::string version) {
     // get the json file url of the version
     std::string url = version_list[version_id].value("url", "none");
     // get the json file
-    json version_data = json::parse(httpGet(url));
+    json version_data = json::parse(getAssetsInternal::httpGet(url));
     // return the version data
     return version_data;
 }
@@ -167,7 +173,7 @@ void getAssets(std::string version, std::string base_path = "assets/") {
     
     // Download the client.jar
     std::cout << "Downloading client.jar..." << std::endl;
-    downloadFile(clientURL, (base_path+std::string("client.jar")).c_str());
+    getAssetsInternal::downloadFile(clientURL, (base_path+std::string("client.jar")).c_str());
 
     // unzip the minecraft folder in /client.jar/assets/
     zip *z = zip_open((base_path+std::string("client.jar")).c_str(), 0, 0);
@@ -187,7 +193,7 @@ void getAssets(std::string version, std::string base_path = "assets/") {
             // create folder for file
             folder = std::string{sb.name}.substr(7,strlen(sb.name));
 
-            std::vector<std::string> v = split (folder, "/");
+            std::vector<std::string> v = getAssetsInternal::split (folder, "/");
 
             folder = folder.substr(0,length(folder)-length(v[length(v)-1]));
 
@@ -239,7 +245,7 @@ void getResources(std::string version, std::string base_path = "assets/") {
     if (assetIndexUrl == "none") { return; }
 
     // get the asset index
-    json assetIndex = json::parse(httpGet(assetIndexUrl));
+    json assetIndex = json::parse(getAssetsInternal::httpGet(assetIndexUrl));
 
     json objects = assetIndex["objects"];
 
@@ -254,7 +260,7 @@ void getResources(std::string version, std::string base_path = "assets/") {
         std::string folder = base_path+"resources/"+it.key();
         std::string path = base_path+"resources/"+it.key();
 
-        std::vector<std::string> v = split (folder, "/");
+        std::vector<std::string> v = getAssetsInternal::split (folder, "/");
 
         folder = folder.substr(0,length(folder)-length(v[length(v)-1]));
 
@@ -269,7 +275,7 @@ void getResources(std::string version, std::string base_path = "assets/") {
         std::string url = BASE_URL + block +"/"+ hash;
 
         // Download file
-        downloadFile(url.c_str(),path.c_str());
+        getAssetsInternal::downloadFile(url.c_str(),path.c_str());
     }
     std::cout << "Done getting assets!" << std::endl;
 }

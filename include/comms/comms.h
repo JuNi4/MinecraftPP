@@ -18,7 +18,7 @@ class server {
      * @param ip The ip of the server
      * @param port The port of the server
      */
-    server(std::string ip = "localhost", int port = 25565);
+    server(std::string ip = "127.0.0.1", int port = 25565);
 
     /**
      * @brief Gets the status of a minecraft server.
