@@ -18,6 +18,7 @@ Note: Minecraft++ is currently in developement and may not be functional at all.
 (Included)
   - nlohmann/json (https://github.com/nlohmann/json)
   - elnormous/HTTPRequest (https://github.com/elnormous/HTTPRequest)
+  - GLGE (https://github.com/dm8at/glge)
 
 ### Setup
 On the first launch, Minecraft++ will automatily download all resources required to start the game. This may take up to 10 minutes or more, depending on your connection speed.
