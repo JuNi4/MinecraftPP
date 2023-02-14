@@ -4,7 +4,7 @@ By: @JuNi4
 A library for everyting related to the options.txt
 
 -- Requirements --
-  - nlohmann/json (https://github.com/nlohmann/json)
+  - nlohmann/json (https://github.com/nlohmann/json)\
  (Included in Mc++)
   - utils.hpp
   - os.hpp
