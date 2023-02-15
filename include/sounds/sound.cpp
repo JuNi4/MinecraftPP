@@ -55,7 +55,13 @@ int soundHandler::play() {
     int id = std::rand() % length(soundData["sounds"]);
 
     // Play the sound file
-    std::string file = soundData["sounds"][id]["name"];
+    std::string file = "";
+    if ( soundData["sounds"][id].is_string() ) {
+        file = soundData["sounds"][id];
+    } else {
+        file = soundData["sounds"][id]["name"];
+    }
+    
     std::string path = "celluloid assets/resources/minecraft/sounds/"+ file +".ogg";
     // implement a proper play method
     system(path.c_str());

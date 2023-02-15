@@ -14,11 +14,13 @@
 
 using json = nlohmann::json;
 
-int main() {
+int main(int argc, char *argv[]) {
 
     soundHandler x;
 
-    x.setKey("entity.skeleton_horse.step_water");
+    if (argc < 2) { return 1; }
+
+    x.setKey(argv[1]);
 
     x.play();
 
