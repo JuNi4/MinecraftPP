@@ -65,7 +65,7 @@ void soundHandler::setKey(std::string key) {
 }
 
 int soundHandler::play() {
-
+    // there is still a bug
     // get name of sound file
     std::string file = this->_getFileFromKey(this->_file);
     
@@ -77,7 +77,7 @@ int soundHandler::play() {
 
     // get index of file name in sound list
     try {
-        unsigned int index = _soundList.at(file);
+        unsigned int index = _soundList.at(file); // this is causing a type error sometimes, at least with the key music.creative
     } catch (nlohmann::json_abi_v3_11_2::detail::out_of_range) {
         done = true;
     }
