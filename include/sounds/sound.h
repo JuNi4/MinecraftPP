@@ -33,7 +33,8 @@ class soundHandler {
         json _soundList;
 
         json _setupSoundList();
-        
+
+        std::string _getFileFromKey(std::string key);
 
     public:
         /**

@@ -33,22 +33,14 @@ json soundHandler::_setupSoundList() {
 
 }
 
-soundHandler::soundHandler() {
-    this->_soundList = this->_setupSoundList();
-}
-
-void soundHandler::setKey(std::string key) {
-    this->_file = key;
-}
-
-int soundHandler::play() {
+std::string soundHandler::_getFileFromKey(std::string key) {
     // check if sound data exists
-    if ( this->_soundList[this->_file] == nullptr ) { return 1; }
+    if ( this->_soundList[key] == nullptr ) { return ""; }
     // get sound data
-    json soundData = this->_soundList[this->_file];
+    json soundData = this->_soundList[key];
 
     // check if sound data has files attached
-    if ( soundData["sounds"] == nullptr && length(soundData["sounds"]) > 0 ) { return 1; }
+    if ( soundData["sounds"] == nullptr && length(soundData["sounds"]) > 0 ) { return ""; }
 
     // generate a random number
     std::srand(time(NULL)); // set current time as seed
@@ -61,7 +53,47 @@ int soundHandler::play() {
     } else {
         file = soundData["sounds"][id]["name"];
     }
+    return file;
+}
+
+soundHandler::soundHandler() {
+    this->_soundList = this->_setupSoundList();
+}
+
+void soundHandler::setKey(std::string key) {
+    this->_file = key;
+}
+
+int soundHandler::play() {
+
+    // get name of sound file
+    std::string file = this->_getFileFromKey(this->_file);
     
+    // check if file name is empty
+    if (file == "") { return 1; }
+
+    // un "nest" sound files
+    bool done = false;
+
+    // get index of file name in sound list
+    try {
+        unsigned int index = _soundList.at(file);
+    } catch (nlohmann::json_abi_v3_11_2::detail::out_of_range) {
+        done = true;
+    }
+
+    while ( !done ) {
+        // get new file name/path
+        file = this->_getFileFromKey(file);
+        // set new size and index values
+        try {
+            unsigned int index = _soundList.at(file);
+        } catch (nlohmann::json_abi_v3_11_2::detail::out_of_range) {
+            done = true;
+        }
+    }
+    
+    // construct the path to the file
     std::string path = "celluloid assets/resources/minecraft/sounds/"+ file +".ogg";
     // implement a proper play method
     system(path.c_str());
