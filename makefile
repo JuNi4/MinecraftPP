@@ -6,7 +6,7 @@ SRC		:= src
 INCLUDE	:= include
 LIB		:= lib
 
-LIBRARIES	:= include/comms/comms.cpp -lzip -lcurl
+LIBRARIES	:= include/comms/comms.cpp include/sounds/sound.cpp -lzip -lcurl
 EXECUTABLE	:= main
 
 #  -lcurl -lzip
