@@ -76,9 +76,7 @@ int soundHandler::play() {
     bool done = false;
 
     // get index of file name in sound list
-    try {
-        unsigned int index = _soundList.at(file); // this is causing a type error sometimes, at least with the key music.creative
-    } catch (nlohmann::json_abi_v3_11_2::detail::out_of_range) {
+    if (this->_soundList[file] == nullptr) {
         done = true;
     }
 
@@ -86,17 +84,14 @@ int soundHandler::play() {
         // get new file name/path
         file = this->_getFileFromKey(file);
         // set new size and index values
-        try {
-            unsigned int index = _soundList.at(file);
-        } catch (nlohmann::json_abi_v3_11_2::detail::out_of_range) {
-            done = true;
-        }
+        if (this->_soundList[file] == nullptr) { done = true; }
     }
     
     // construct the path to the file
     std::string path = "celluloid assets/resources/minecraft/sounds/"+ file +".ogg";
     // implement a proper play method
-    system(path.c_str());
+    //system(path.c_str());
+    std::cout << path << std::endl;
     return 0;
 }
 
