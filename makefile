@@ -6,12 +6,11 @@ SRC		:= src
 INCLUDE	:= include
 LIB		:= lib
 
-LIBRARIES	:= include/comms/comms.cpp include/sounds/sound.cpp -lzip -lcurl
+LIBRARIES	:= include/comms/comms.cpp include/sounds/sound.cpp -lzip -lcurl -lsfml-audio
 EXECUTABLE	:= main
 
 #  -lcurl -lzip
 # In gh codespaces, use -std=c++17
-# And remove -lcurl and -lzip from compiler
 
 all: $(BIN)/$(EXECUTABLE)
 

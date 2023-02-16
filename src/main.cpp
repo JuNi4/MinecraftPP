@@ -36,5 +36,10 @@ int main(int argc, char *argv[]) {
 
     x.play();
 
+    int inp;
+    std::cin >> inp;
+
+    x.stop();
+
     return 0;
 }
