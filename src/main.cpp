@@ -1,9 +1,11 @@
+// C++ Default Librarys
 #include <iostream>
 
+// Other Peoples Librarys
 #include <curl/curl.h>
-
 #include <nlohmann/json.hpp>
 
+// Custom librarys
 #include <options/options.hpp>
 #include <getAssets/getAssets.hpp>
 #include <comms/comms.h>
