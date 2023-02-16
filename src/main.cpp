@@ -28,18 +28,27 @@ int main(int argc, char *argv[]) {
         getResources("1.19.3");
     }
 
+    // sound object
     soundHandler x;
 
+    // check if required arguements are present
     if (argc < 2) { return 1; }
+    // optionally: set volume
+    if (argc >= 3) { 
+        std::string volume = argv[2];
+        x.setVolume( std::stoi(volume) );
+    }
 
-    x.setKey(argv[1]);
+    // loop indefinitly
+    while (true) {
+        // set the sound file
+        x.setKey(argv[1]);
+        // play the sound file
+        x.play();
+        // wait for the sound file to finish
+        while (x.status() == sf::SoundSource::Status::Playing) {}
 
-    x.play();
-
-    int inp;
-    std::cin >> inp;
-
-    x.stop();
-
+    }
+    
     return 0;
 }

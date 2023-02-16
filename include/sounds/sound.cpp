@@ -145,6 +145,10 @@ void soundHandler::destroy() {
 }
 */
 
+sf::SoundSource::Status soundHandler::status() {
+    return this->_sound.getStatus();
+}
+
 void soundHandler::reloadSoundList() {
     this->_soundList = this->_setupSoundList();
 }

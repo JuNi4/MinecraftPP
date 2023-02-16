@@ -107,6 +107,8 @@ class soundHandler {
 
         //void destroy();
 
+        sf::SoundSource::Status status();
+
         /**
          * @brief Re reads the sounds.json and stores it in a json object
          */
