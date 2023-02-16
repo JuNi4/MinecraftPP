@@ -84,6 +84,13 @@ class soundHandler {
         void setPosition(float x, float y, float z);
 
         /**
+         * @brief Enables audio relative to player
+         * 
+         * @param enable Whether or not it should be enabled
+         */
+        void enable3DAudio(bool enable);
+
+        /**
          * @brief Playes a random sound from the sound file list from a key from the sound list
          * 
          * @return int Whether or not the playing of a sound was sucsessfull

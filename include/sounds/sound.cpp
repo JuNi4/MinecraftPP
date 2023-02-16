@@ -62,6 +62,7 @@ soundHandler::soundHandler() {
     // setup sound position
     sf::Vector3f v1(0.0f, 0.0f, 0.0f);
     this->pos = v1;
+    this->_sound.setPosition(v1);
 }
 
 void soundHandler::setKey(std::string key) {
@@ -83,6 +84,15 @@ void soundHandler::setPosition(float x, float y, float z) {
     sf::Vector3f v1(x, y, z);
     // replace the old position
     this->pos = v1;
+    this->_sound.setPosition(v1);
+
+    // set sound mode to relative
+    this->_sound.setRelativeToListener(true);
+}
+
+void soundHandler::enable3DAudio(bool enable) {
+    // enable/disable 3D audio
+    this->_sound.setRelativeToListener(enable);
 }
 
 int soundHandler::play() {

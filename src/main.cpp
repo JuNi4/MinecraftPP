@@ -49,7 +49,6 @@ int main(int argc, char *argv[]) {
         x.play();
         // wait for the sound file to finish
         while (x.status() == sf::SoundSource::Status::Playing) {}
-
     }
     
     return 0;
