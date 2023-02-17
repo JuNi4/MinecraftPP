@@ -13,7 +13,8 @@ Note: Minecraft++ is currently in developement and may not be functional at all.
   - gl       (`sudo apt install libgl-dev`)
   - glew     (`sudo apt install libglew-dev`)
   - libzip   (`sudo apt install libzip-dev` or https://libzip.org/download/)
-  - curl     (`sudo apt install libcurl4-*-dev` or https://curl.se/download.html) *There are multiple versions available, like libcurl4-nss-dev
+  - libcurl     (`sudo apt install libcurl4-*-dev` or https://curl.se/download.html) *There are multiple versions available, like libcurl4-nss-dev
+  - libsfml
 
 (Included)
   - nlohmann/json (https://github.com/nlohmann/json)
