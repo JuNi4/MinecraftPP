@@ -2,7 +2,7 @@
 #include <fstream>
 #include <utils.hpp>
 
-json soundHandler::_setupSoundList() {
+json sound::_setupSoundList() {
     // check if sounds.json exists
     if (! std::filesystem::is_regular_file("assets/resources/minecraft/sounds.json") ) {
         return json::parse(R"({"error": "sounds.json does not exist"})");
@@ -33,7 +33,7 @@ json soundHandler::_setupSoundList() {
 
 }
 
-std::string soundHandler::_getFileFromKey(std::string key) {
+std::string sound::_getFileFromKey(std::string key) {
     // check if sound data exists
     if ( this->_soundList[key] == nullptr ) { return ""; }
     // get sound data
@@ -56,7 +56,7 @@ std::string soundHandler::_getFileFromKey(std::string key) {
     return file;
 }
 
-soundHandler::soundHandler() {
+sound::sound() {
     // setup sound list
     this->_soundList = this->_setupSoundList();
     // setup sound position
@@ -65,21 +65,21 @@ soundHandler::soundHandler() {
     this->_sound.setPosition(v1);
 }
 
-void soundHandler::setKey(std::string key) {
+void sound::setKey(std::string key) {
     // set the sound key
     this->_file = key;
 }
 
-void soundHandler::setVolume(int volume) {
+void sound::setVolume(int volume) {
     // set the volume
     this->_sound.setVolume(volume);
 }
 
-void soundHandler::setPitch(float pitch) {
+void sound::setPitch(float pitch) {
     this->_sound.setPitch(pitch);
 }
 
-void soundHandler::setPosition(float x, float y, float z) {
+void sound::setPosition(float x, float y, float z) {
     // Create a new vector with the specified position
     sf::Vector3f v1(x, y, z);
     // replace the old position
@@ -90,12 +90,12 @@ void soundHandler::setPosition(float x, float y, float z) {
     this->_sound.setRelativeToListener(true);
 }
 
-void soundHandler::enable3DAudio(bool enable) {
+void sound::enable3DAudio(bool enable) {
     // enable/disable 3D audio
     this->_sound.setRelativeToListener(enable);
 }
 
-int soundHandler::play() {
+int sound::play() {
     // there is still a bug
     // get name of sound file
     std::string file = this->_getFileFromKey(this->_file);
@@ -135,17 +135,17 @@ int soundHandler::play() {
     return 0;
 }
 
-void soundHandler::pause() {
+void sound::pause() {
     this->_sound.pause();
 }
 
-void soundHandler::resume() {
+void sound::resume() {
     if (this->_sound.getStatus() == sf::SoundSource::Status::Paused) {
         this->_sound.play();
     }
 }
 
-void soundHandler::stop() {
+void sound::stop() {
     this->_sound.stop();
 }
 
@@ -156,10 +156,10 @@ void soundHandler::destroy() {
 }
 */
 
-sf::SoundSource::Status soundHandler::status() {
+sf::SoundSource::Status sound::status() {
     return this->_sound.getStatus();
 }
 
-void soundHandler::reloadSoundList() {
+void sound::reloadSoundList() {
     this->_soundList = this->_setupSoundList();
 }

@@ -22,7 +22,7 @@ using json = nlohmann::json;
  * @brief Simple acsess to (minecraft) sounds
  * 
  */
-class soundHandler {
+class sound {
     private:
         /**
          * @brief The path to a file to be playd
@@ -51,7 +51,7 @@ class soundHandler {
         /**
          * @brief Construct a new sound Handler object
          */
-        soundHandler();
+        sound();
 
         /**
          * @brief Set the File path

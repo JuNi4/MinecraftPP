@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     }
 
     // sound object
-    soundHandler x;
+    sound x;
 
     // check if required arguements are present
     if (argc < 2) { return 1; }
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
     }
 
     // loop indefinitly
-    while (true) {
+    while (0) {
         // set the sound file
         x.setKey(argv[1]);
         // play the sound file
