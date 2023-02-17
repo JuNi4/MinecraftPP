@@ -129,6 +129,7 @@ int soundHandler::play() {
         return 1;
     }
 
+    // play sound
     this->_sound.play();
 
     return 0;
