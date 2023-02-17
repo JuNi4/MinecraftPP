@@ -17,24 +17,24 @@ void soundHandler::_player(int id, std::string soundId, float pitch, bool enable
     sfx.enable3DAudio(enable3D);
 
     // play sound
-    sdx.play();
+    sfx.play();
 
     // keep sound alive
-    while (sfx.getStatus() = sf::SoundSource::Status::Playing && ! std::find( this->stop.begin, this->stop.end, id ) != this->stop.end ) {
+    while (sfx.status() = sf::SoundSource::Status::Playing && this->stop.at(id) > this->stop.size() ) {
         if (enable3D) {
-            sfx.pos = pos - this->_player;
+            sfx.pos = pos - this->_playerPos;
         }
         float vol = this->_masterVolume/100 * this->_musicVolume/100;
         sfx.setVolume(vol);
     }
 
     // remove id from stop
-    if (std::find( this->stop.begin, this->stop.end, id ) != this->stop.end ) {
-        std::remove( this->stop.begin, this->stop.end, std::find( this->stop.begin, this->stop.end, id ) );
+    if (this->stop.at(id) > this->stop.size()) {
+        this->stop.erase(std::next(this->stop.begin(), this->stop.at(id)));
     }
 
     // remove id from running
-    std::remove( this->running.begin, this->running.end, std::find( this->running.begin, this->running.end, id ) );
+    this->running.erase(std::next(this->running.begin(), this->running.at(id)));
 
 }
 
@@ -44,7 +44,7 @@ int soundHandler::call(std::string soundId, float pitch, bool enable3D, sf::Vect
     // run the sound asyncronisly
     std::future<void> ft = std::async(this->_player, this->_lastId, soundId, pitch, enable3D, pos);
     // add id to running
-    this->running.pushback(this->_lastId);
+    this->running.push_back(this->_lastId);
     // return ID
     return this->_lastId;
 }
