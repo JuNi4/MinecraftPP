@@ -51,7 +51,7 @@ class sound {
         /**
          * @brief Construct a new sound Handler object
          */
-        sound();
+        sound(bool enable3D = false);
 
         /**
          * @brief Set the File path
@@ -89,6 +89,28 @@ class sound {
          * @param enable Whether or not it should be enabled
          */
         void enable3DAudio(bool enable);
+
+
+        // Sound handler position value storage
+        //  Sound position relative to world
+        sf::Vector3f sfxPos;
+        /** 
+         * The source of the sound
+         * 
+         * 0: master
+         * 1: Music
+         * 2: Jukebox/Noteblock
+         * 3: Wheather
+         * 4: Blocks
+         * 5: Hostile
+         * 6: Friendly
+         * 7: Players
+         * 8: Ambient
+         * 9: Voice
+         */
+        int sfxType;
+        // Calculate the position of the audio source relative to the player
+        void calcPosition(sf::Vector3f pos = sf::Vector3f (0.f, 0.f, 0.f));
 
         /**
          * @brief Playes a random sound from the sound file list from a key from the sound list

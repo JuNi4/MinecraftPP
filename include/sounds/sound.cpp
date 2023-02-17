@@ -56,13 +56,14 @@ std::string sound::_getFileFromKey(std::string key) {
     return file;
 }
 
-sound::sound() {
+sound::sound(bool enable3D) {
     // setup sound list
     this->_soundList = this->_setupSoundList();
     // setup sound position
     sf::Vector3f v1(0.0f, 0.0f, 0.0f);
     this->pos = v1;
     this->_sound.setPosition(v1);
+    this->_sound.setRelativeToListener(enable3D);
 }
 
 void sound::setKey(std::string key) {
@@ -95,6 +96,13 @@ void sound::enable3DAudio(bool enable) {
     this->_sound.setRelativeToListener(enable);
 }
 
+// Sound handler specific code:
+// Calculate the sound position relative to the player
+void sound::calcPosition(sf::Vector3f pos) {
+    this->pos = this->sfxPos - pos;
+    this->_sound.setPosition(this->pos);
+}
+
 int sound::play() {
     // there is still a bug
     // get name of sound file
@@ -120,9 +128,10 @@ int sound::play() {
     
     // construct the path to the file
     std::string path = "assets/resources/minecraft/sounds/"+ file +".ogg";
-    // implement a proper play method
-    //system(path.c_str());
-    std::cout << path << std::endl;
+
+    //system(path.c_str()); // a relic of the past, when i used to use my system media player instead of sfml
+    //std::cout << path << std::endl;
+
     // Open it from an audio file
     if (! this->_sound.openFromFile(path) )
     {
