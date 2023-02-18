@@ -6,54 +6,41 @@
 #define _SOUND_HANDLER_H_
 
 class soundHandler {
-    public:
-        int soundLimit = 64; // maximum of 255!
-        std::vector<sound> sounds;
-        sf::Vector3f playerPos;
+    private:
+        int _masterVolume = 50;
+        int _musicVolume = 100;
 
-        float volume_master = .5f;
-        float volume_music = .5f;
-        float volume_noteblock = 1.f;
-        float volume_wheather = 1.f;
-        float volume_blocks = 1.f;
-        float volume_hostile = 1.f;
-        float volume_friendly = 1.f;
-        float volume_players = 1.f;
-        float volume_ambient = 1.f;
-        float volume_voice = 1.f;
+        int _lastId = -1;
+
+    public:
+        sf::Vector3f playerPos;
+        std::vector<int> stop = {};
+        std::vector<int> running = {};
 
         int id = 0;
+
+        /**
+         * @brief The audio player function
+         */
+        void player(int id, std::string soundId, float pitch, bool enable3D, sf::Vector3f pos = sf::Vector3f (0.f, 0.f, 0.f));
 
         /**
          * @brief Construct a new sound Handler
          */
         soundHandler();
 
-        /**
-         * @brief Plays a selected sound
-         * 
-         * @param soundId The ID of the sound
-         * @param pitch The pitch of a sound. This also changes the speed
-         * @param enable3D 3D Audio.
-         * @param pos The position of the sound in 3d space
-         * @return int the id of the sound or a negative number for errors
-         */
-        int play(std::string soundId, float pitch = 1, bool enable3D = false, sf::Vector3f pos = sf::Vector3f (0.f, 0.f, 0.f));
+        int getId();
 
         /**
-         * @brief Updates the position and volume of a sound
+         * @brief A simple function that plays a sound
          * 
-         * @param id The id of the sound in the sounds array
-         * @return int Whether or not is was sucsessfull
+         * @param soundId A string telling the programm which sound to play
+         * @param pitch The Pitch of the sound being played
+         * @param enable3D whether or not the audo will be played in 3D space
+         * @param pos The position of the sound
          */
-        int update(int id);
+        void call(std::string soundId, float pitch, bool enable3D, sf::Vector3f pos = sf::Vector3f (0.f, 0.f, 0.f));
 
-        /**
-         * @brief Updates all sound sources
-         * 
-         * @return int Whether or not is was sucsessfull
-         */
-        int updateAll();
 };
 
 #endif
