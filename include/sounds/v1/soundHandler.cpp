@@ -99,6 +99,7 @@ int soundHandler::play(std::string soundId, float pitch, bool enable3D, sf::Vect
     if (this->id == -1) { return -1; }
     // Play sound
     //this->player(id, soundId, pitch, enable3D, pos);
+    // currently somehow does not run asyncronisly. Needs further investigation
     auto x = std::async(std::launch::async, &soundHandler::player, this, this->id, soundId, pitch, enable3D, pos);
 
     return this->id;

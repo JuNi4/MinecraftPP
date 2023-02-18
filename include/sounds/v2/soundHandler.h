@@ -5,14 +5,17 @@
 #ifndef _SOUND_HANDLER_H_
 #define _SOUND_HANDLER_H_
 
-class soundHandlerv2 {
+class soundHandlerV2 {
     public:
-        int soundLimit = 64; // maximum of 255!
-        std::vector<sound> sounds;
+        // the maximum amounts of sounds
+        int soundLimit = 255; // maximum of 255!
+        // a list holding all sound objects
+        std::vector<sound> sounds; // ToDo: make it dynamic
+        // the absolute position of the player
         sf::Vector3f playerPos;
 
         float volume_master = .5f;
-        float volume_music = .5f;
+        float volume_music = 0.2f;
         float volume_noteblock = 1.f;
         float volume_wheather = 1.f;
         float volume_blocks = 1.f;
@@ -22,12 +25,13 @@ class soundHandlerv2 {
         float volume_ambient = 1.f;
         float volume_voice = 1.f;
 
+        // the last id that was used
         int id = 0;
 
         /**
          * @brief Construct a new sound Handler
          */
-        soundHandlerv2();
+        soundHandlerV2();
 
         /**
          * @brief Plays a selected sound

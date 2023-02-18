@@ -28,17 +28,25 @@ int main(int argc, char *argv[]) {
     }
 
     // create sound handler object
-    soundHandlerv2 x;
+    soundHandlerV2 x;
 
-    // play id from arguments
-    std::cout << x.play(key, 1.f, true, sf::Vector3f(-10.f, 0.f, 0.f)) << "\n";
+    // set sound limit to 1
+    x.soundLimit = 1;
 
     x.playerPos = sf::Vector3f(0.f,0.f,0.f);
 
-    x.updateAll();
+    while (true) {
+        // play id from arguments
+        std::cout << x.play(key, 1.f, true, sf::Vector3f(-10.f, 0.f, 0.f)) << "\n";
 
-    // wait, so the sound does not stop
-    while (x.sounds[x.id].status() == sf::SoundSource::Status::Playing) {}
+        //x.updateAll();
+
+        // wait, so the sound does not stop
+        while (x.sounds[x.id].status() == sf::SoundSource::Status::Playing) {
+            x.updateAll();
+        }
+
+    }
 
     return 0;
 }

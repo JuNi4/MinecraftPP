@@ -43,14 +43,6 @@ std::string getOsDelimiter()
     return "\\";
     #elif _WIN64
     return "\\";
-    #elif __APPLE__ || __MACH__
-    return "/";
-    #elif __linux__
-    return "/";
-    #elif __FreeBSD__
-    return "/";
-    #elif __unix || __unix__
-    return "/";
     #else
     return "/";
     #endif
