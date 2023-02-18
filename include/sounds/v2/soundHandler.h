@@ -1,11 +1,11 @@
-#include "sound.h"
+#include "../sound.h"
 #include <SFML/Audio/Music.hpp>
 #include <future>
 
 #ifndef _SOUND_HANDLER_H_
 #define _SOUND_HANDLER_H_
 
-class soundHandler {
+class soundHandlerv2 {
     public:
         int soundLimit = 64; // maximum of 255!
         std::vector<sound> sounds;
@@ -27,7 +27,7 @@ class soundHandler {
         /**
          * @brief Construct a new sound Handler
          */
-        soundHandler();
+        soundHandlerv2();
 
         /**
          * @brief Plays a selected sound

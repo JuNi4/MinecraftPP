@@ -9,7 +9,7 @@
 #include <options/options.hpp>
 #include <getAssets/getAssets.hpp>
 #include <comms/comms.h>
-#include <sounds/soundHandler.h>
+#include <sounds/v2/soundHandler.h>
 
 #include <os.hpp>
 #include <utils.hpp>
@@ -28,17 +28,17 @@ int main(int argc, char *argv[]) {
     }
 
     // create sound handler object
-    soundHandler x;
+    soundHandlerv2 x;
 
     // play id from arguments
-    x.play(key, 1.f, true, sf::Vector3f(-10.f, 0.f, 0.f));
-
-    x.updateAll();
+    std::cout << x.play(key, 1.f, true, sf::Vector3f(-10.f, 0.f, 0.f)) << "\n";
 
     x.playerPos = sf::Vector3f(0.f,0.f,0.f);
 
+    x.updateAll();
+
     // wait, so the sound does not stop
-    while (true) {}
+    while (x.sounds[x.id].status() == sf::SoundSource::Status::Playing) {}
 
     return 0;
 }

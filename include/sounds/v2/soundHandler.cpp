@@ -1,12 +1,12 @@
 #include "soundHandler.h"
 
 // sound handler constructor
-soundHandler::soundHandler() {
+soundHandlerv2::soundHandlerv2() {
     // setup sounds
     this->sounds = std::vector<sound> (this->soundLimit);
 }
 
-int soundHandler::play(std::string soundId, float pitch, bool enable3D, sf::Vector3f pos) {
+int soundHandlerv2::play(std::string soundId, float pitch, bool enable3D, sf::Vector3f pos) {
     // get a free id
     while ( this->sounds[this->id].status() == sf::SoundSource::Status::Playing ) {
         // increment the counter to check the next slot for a free sound object
@@ -49,7 +49,7 @@ int soundHandler::play(std::string soundId, float pitch, bool enable3D, sf::Vect
     return id;
 }
 
-int soundHandler::update(int id) {
+int soundHandlerv2::update(int id) {
     // Sound Postition calculation
     sf::Vector3f sfxPos = this->sounds[id].sfxPos;
     sf::Vector3f playerPos = this->playerPos;
@@ -79,9 +79,9 @@ int soundHandler::update(int id) {
     return 0;
 }
 
-int soundHandler::updateAll() {
+int soundHandlerv2::updateAll() {
     // go through each sound object...
-    for (long i = 0; i < this->sounds.size(); i++) {
+    for (long unsigned i = 0; i < this->sounds.size(); i++) {
         // ...and update it
         update(i);
     }

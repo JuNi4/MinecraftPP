@@ -1,4 +1,4 @@
-#include "sound.h"
+#include "../sound.h"
 #include <SFML/Audio/Music.hpp>
 #include <future>
 
@@ -39,7 +39,7 @@ class soundHandler {
          * @param enable3D whether or not the audo will be played in 3D space
          * @param pos The position of the sound
          */
-        void call(std::string soundId, float pitch, bool enable3D, sf::Vector3f pos = sf::Vector3f (0.f, 0.f, 0.f));
+        int play(std::string soundId, float pitch, bool enable3D, sf::Vector3f pos = sf::Vector3f (0.f, 0.f, 0.f));
 
 };
 
