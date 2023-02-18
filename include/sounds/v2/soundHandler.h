@@ -14,8 +14,8 @@ class soundHandlerV2 {
         // the absolute position of the player
         sf::Vector3f playerPos;
 
-        float volume_master = .5f;
-        float volume_music = 0.2f;
+        float volume_master = 1.f;
+        float volume_music = 1.f;
         float volume_noteblock = 1.f;
         float volume_wheather = 1.f;
         float volume_blocks = 1.f;

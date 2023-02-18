@@ -27,8 +27,16 @@ int main(int argc, char *argv[]) {
         key = argv[1];
     }
 
+    float volume = 10;
+    if (argc >= 3) {
+        volume = std::stoi(argv[2]);
+    }
+
     // create sound handler object
     soundHandlerV2 x;
+
+    // set master volume
+    x.volume_master = volume / (float) 100;
 
     // set sound limit to 1
     x.soundLimit = 1;
@@ -37,7 +45,7 @@ int main(int argc, char *argv[]) {
 
     while (true) {
         // play id from arguments
-        std::cout << x.play(key, 1.f, true, sf::Vector3f(-10.f, 0.f, 0.f)) << "\n";
+        x.play(key, 1.f, true, sf::Vector3f(-10.f, 0.f, 0.f));
 
         //x.updateAll();
 
