@@ -8,7 +8,7 @@
 // Custom librarys
 #include <options/options.hpp>
 #include <comms/comms.h>
-#include <sounds/sound.h>
+#include <sounds/v2/soundHandler.h>
 
 #include <os.hpp>
 #include <utils.hpp>

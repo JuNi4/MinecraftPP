@@ -99,7 +99,9 @@ nlohmann::json defaultOptionsStruct = json::parse(R"(
         "icon":{"val": "assets/resources/icons/minecraft.icns", "comments": "# The icon path for the application logo\n# Default: assets/resources/icons/minecraft.icns"},
         "title":{"val": "Minecraft++", "comments": "# The title of the game\n# Default: Minecraft++"},
         "brand":{"val": "Minecraft++", "comments": "# Brand of the minecraft client (only used in F3 menu)\n# Default: Minecraft++"},
-        "sendBrand":{"val": "true", "comments": "# Wether or not the Minecraft++ brand should be send to the server\n# If not, the client will tell a server, that it is a vanilla client\n# It will disable client specific features, that are requested by a server like custom ui's\n# Default: true"}
+        "sendBrand":{"val": "true", "comments": "# Wether or not the Minecraft++ brand should be send to the server\n# If not, the client will tell a server, that it is a vanilla client\n# It will disable client specific features, that are requested by a server like custom ui's\n# Default: true"},
+        "serverIP":{"val": "localhost", "comments": "# Dev: The Ip of the server to connect to\n# Default: localhost"},
+        "serverPort":{"val": "25565", "comments": "# Dev: The Port of the server to connect to\n# Default: 25565"}
     }
 )");
 
