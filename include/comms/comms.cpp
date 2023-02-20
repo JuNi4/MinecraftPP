@@ -4,11 +4,17 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+// constructor of server object
 server::server(std::string ip, int port) {
     this->ip = ip;
     this->port = port;
 }
 
+std::vector<uint8_t> server::_pack(std::string pack) {
+    // convert the string to bytes
+}
+
+// get the status of a server
 json server::status() {
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd == -1) {

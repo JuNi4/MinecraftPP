@@ -1,3 +1,13 @@
+/**
+ * @file comms.h
+ * @author JuNi
+ * @brief WIP Server communication library
+ * @version 0.1
+ * @date 2023-02-20
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include <iostream>
 #include <nlohmann/json.hpp>
 
@@ -7,6 +17,12 @@
 using json = nlohmann::json;
 
 class server {
+    private:
+        /**
+         * @brief Packs anything to bytes to be send to a socket
+         * 
+         */
+        std::vector<uint8_t> _pack(std::string pack);
     public:
 
     std::string ip;
