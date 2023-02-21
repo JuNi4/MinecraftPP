@@ -15,9 +15,11 @@
 
 using json = nlohmann::json;
 
-int main(int argc, char *argv[]) {
+int main() {
 
     server x("mc.hypixel.net");
+
+    x.status();
     
     return 0;
 }

@@ -3,6 +3,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <cstddef>
+#include <cstring>
 
 // constructor of server object
 server::server(std::string ip, int port) {
@@ -12,6 +14,14 @@ server::server(std::string ip, int port) {
 
 std::vector<uint8_t> server::_pack(std::string pack) {
     // convert the string to bytes
+    std::byte bytes[pack.length()];
+    std::memcpy(bytes, pack.data(), pack.length());
+
+    std::vector<uint8_t> byt;
+ 
+    for (auto &b: bytes) {
+        byt.push_back(std::to_);
+    }
 }
 
 // get the status of a server
