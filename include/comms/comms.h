@@ -22,7 +22,8 @@ class server {
          * @brief Packs anything to bytes to be send to a socket
          * 
          */
-        std::vector<uint8_t> _pack(std::string pack);
+        std::vector<uint8_t> _pack_variant(auto data);
+        std::vector<uint8_t> _pack_data(auto data);
     public:
 
     std::string ip;

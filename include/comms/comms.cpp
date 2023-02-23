@@ -12,16 +12,10 @@ server::server(std::string ip, int port) {
     this->port = port;
 }
 
-std::vector<uint8_t> server::_pack(std::string pack) {
-    // convert the string to bytes
-    std::byte bytes[pack.length()];
-    std::memcpy(bytes, pack.data(), pack.length());
+std::vector<uint8_t> server::_pack_variant(auto data) {
+}
 
-    std::vector<uint8_t> byt;
- 
-    for (auto &b: bytes) {
-        byt.push_back(std::to_);
-    }
+std::vector<uint8_t> server::_pack_data(auto data) {
 }
 
 // get the status of a server
@@ -42,7 +36,7 @@ json server::status() {
         return json::parse(R"({"error": "task sucsessfully failed!"})");
     }
 
-    uint8_t data[] = {0x00, 0x00};
+    const char* data = "\x00\x00\t127.0.0.1\t25565\x01";
 
     std::cout << data << std::endl;
 

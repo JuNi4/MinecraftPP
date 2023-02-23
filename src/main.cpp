@@ -17,9 +17,9 @@ using json = nlohmann::json;
 
 int main() {
 
-    server x("mc.hypixel.net");
+    server x;
 
-    x.status();
+    std::cout << x.status() << "\n";
     
     return 0;
 }
