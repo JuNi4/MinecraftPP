@@ -1,5 +1,7 @@
 # Minecraft++
  Minecraft in cpp with OpenGL
+ 
+ Disclaimer: this software is not an official Microsoft product and/or associated with Mojang and/or Microsoft and is a completely independently developed project.
 
 Note: Minecraft++ is currently in developement and may not be functional at all. Currently only 2 persons are working on this wich means that developement may take a while.
 
