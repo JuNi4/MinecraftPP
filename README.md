@@ -5,6 +5,7 @@ Note: Minecraft++ is currently in developement and may not be functional at all.
 
 ## Supported operating systems:
 - Linux (only tested on Debian)
+- Windows (not tested)
 
 ## How to setup Minecraft++
 
