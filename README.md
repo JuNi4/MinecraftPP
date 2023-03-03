@@ -17,7 +17,7 @@ Note: Minecraft++ is currently in developement and may not be functional at all.
   - libglew-dev
   - libzip   (https://libzip.org/download/)
   - libcurl     (https://curl.se/download.html)
-  - libsfml
+  - libsfml (https://www.sfml-dev.org/)
 
 (Included)
   - nlohmann/json (https://github.com/nlohmann/json)
