@@ -15,8 +15,8 @@ Note: Minecraft++ is currently in developement and may not be functional at all.
   - freeglut3-dev
   - libgl-dev
   - libglew-dev
-  - libzip   (https://libzip.org/download/)
-  - libcurl     (https://curl.se/download.html)
+  - libzip (https://libzip.org/download/)
+  - libcurl (https://curl.se/download.html)
   - libsfml (https://www.sfml-dev.org/)
 
 (Included)
