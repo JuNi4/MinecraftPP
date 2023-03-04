@@ -28,6 +28,10 @@ using json = nlohmann::json;
 // just so that these are not used unintentionally outside of this file or conflict with anything
 namespace getAssetsInternal {
 
+// messages
+#define ASSETS_STATUS_DOWNLOADING = "[ASSETS] Downloading: %s\n"
+#define ASSETS_ERROR_REQUEST_FAILED = "[ASSETS] Request failed: %s\n"
+
 /**
  * @brief posts a http get request
  * 
@@ -48,7 +52,7 @@ std::string httpGet(std::string url) {
     return std::string{response.body.begin(), response.body.end()};
 
     } catch (const std::exception& e ) {
-        std::cerr << "Request failed, error: " << e.what() << '\n';
+        printf(ASSETS_ERROR_REQUEST_FAILED, e.what());
         return json::parse("{\"error\": \""+std::string(e.what())+"\"}");
     }
 }
@@ -172,7 +176,7 @@ void getAssets(std::string version, std::string base_path = "assets/") {
     const char* clientURL = clientURLString.c_str();
     
     // Download the client.jar
-    std::cout << "Downloading client.jar..." << std::endl;
+    printf(ASSETS_STATUS_DOWNLOADING,"client.jar");
     getAssetsInternal::downloadFile(clientURL, (base_path+std::string("client.jar")).c_str());
 
     // unzip the minecraft folder in /client.jar/assets/
