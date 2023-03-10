@@ -10,8 +10,8 @@
 #include <comms/comms.h>
 #include <sounds/v2/soundHandler.h>
 
-#include <os.hpp>
-#include <utils.hpp>
+#include <utils/os.hpp>
+#include <utils/utils.hpp>
 
 using json = nlohmann::json;
 

@@ -8,11 +8,21 @@
  * 
 */
 
+#ifdef _WIN32 || _WIN64 // Windows specific includes
+
+#include <windows.h>
+#include <Lmcons.h>
+
+#endif
+
+// include guard
 #ifndef _OS_H_
 #define _OS_H_
+#pragma once
 
 #include <iostream>
 
+// namespace os
 namespace os {
 
 /**
@@ -39,9 +49,7 @@ std::string getOsName()
 
 std::string getOsDelimiter()
 {
-    #ifdef _WIN32
-    return "\\";
-    #elif _WIN64
+    #ifdef _WIN32 || _WIN64
     return "\\";
     #else
     return "/";
@@ -49,10 +57,12 @@ std::string getOsDelimiter()
 }
 
 std::string getUserName() {
-    #ifdef __linux__
+    #ifdef __linux__ // linux specific username function
     return std::getenv("USER");
-    #else
-    return "NONE";
+    #elif _WIN32 || _WIN64 // windows specific function
+    char username[UNLEN+1];
+    DWORD username_len = UNLEN+1;
+    GetUserName(username, &username_len);
     #endif
 }
 

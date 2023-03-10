@@ -4,6 +4,9 @@
 
 #ifndef _SOUND_HANDLER_H_
 #define _SOUND_HANDLER_H_
+#pragma once
+
+#include <nlohmann/json.hpp>
 
 class soundHandler {
     private:

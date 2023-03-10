@@ -11,8 +11,8 @@
 #include <fstream>
 #include <filesystem>
 #include <limits>
-#include <utils.hpp>
-#include <os.hpp>
+#include <utils/utils.hpp>
+#include <utils/os.hpp>
 #include <string>
 
 #include "keyCodes.hpp"

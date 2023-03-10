@@ -10,13 +10,15 @@
  */
 
 #include <iostream>
-#include <nlohmann/json.hpp>
 #include <SFML/Audio/Music.hpp>
+#include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 
 #ifndef _SOUNDS_H_
 #define _SOUNDS_H_
+
+#include <utils/utils.hpp>
 
 /**
  * @brief Simple acsess to (minecraft) sounds

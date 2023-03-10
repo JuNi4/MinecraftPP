@@ -6,7 +6,7 @@ SRC		:= src
 INCLUDE	:= include
 LIB		:= lib
 
-LIBRARIES	:= include/comms/comms.cpp include/sounds/*.cpp include/sounds/v1/*.cpp include/sounds/v2/*.cpp -lzip -lcurl -lsfml-audio
+LIBRARIES	:= include/comms/comms.cpp include/sounds/*.cpp include/sounds/v2/*.cpp -lzip -lcurl -lsfml-audio
 EXECUTABLE	:= main
 
 #  -lcurl -lzip
@@ -17,7 +17,7 @@ all: $(BIN)/$(EXECUTABLE)
 run: clean all
 	./$(BIN)/$(EXECUTABLE)
 
-compile: clean all
+c: clean all
 
 $(BIN)/$(EXECUTABLE): $(SRC)/*.cpp
 	$(CXX) $(CXX_FLAGS) -I$(INCLUDE) -L$(LIB) $^ -o $@ $(LIBRARIES)

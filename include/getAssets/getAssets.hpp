@@ -11,6 +11,7 @@
 
 #ifndef _GETASSETS_H_
 #define _GETASSETS_H_
+#pragma once
 
 #include <iostream>
 #include <fstream>
